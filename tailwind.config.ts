@@ -51,12 +51,18 @@ export default {
           DEFAULT: "hsl(var(--gold))",
           light: "hsl(var(--gold-light))",
           glow: "hsl(var(--gold-glow))",
+          soft: "hsl(var(--gold-soft))",
         },
         divine: {
           white: "hsl(var(--divine-white))",
         },
         sky: {
           light: "hsl(var(--sky-light))",
+          soft: "hsl(var(--sky-soft))",
+        },
+        cosmic: {
+          purple: "hsl(var(--cosmic-purple))",
+          pink: "hsl(var(--cosmic-pink))",
         },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
