@@ -61,21 +61,27 @@
 
     /* ========== Divine Light Custom Colors ========== */
     
-    /* Gold spectrum */
+    /* Gold spectrum - Ethereal Luxury */
     --gold: 43 90% 55%;
-    --gold-light: 45 100% 70%;
+    --gold-light: 45 100% 75%;
     --gold-glow: 43 90% 45%;
+    --gold-soft: 45 80% 85%;
     
     /* Divine white - pure light */
     --divine-white: 45 30% 96%;
     
     /* Sky light - ethereal blue */
-    --sky-light: 200 60% 70%;
+    --sky-light: 200 70% 75%;
+    --sky-soft: 200 50% 85%;
     
-    /* Prism colors for gradients */
-    --prism-start: 280 60% 65%;
-    --prism-mid: 200 80% 60%;
-    --prism-end: 320 70% 65%;
+    /* Prism colors for rainbow gradients */
+    --prism-start: 280 60% 70%;
+    --prism-mid: 200 80% 65%;
+    --prism-end: 320 70% 70%;
+    
+    /* Cosmic accents */
+    --cosmic-purple: 270 60% 60%;
+    --cosmic-pink: 320 70% 70%;
   }
 
   .dark {
