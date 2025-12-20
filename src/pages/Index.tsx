@@ -6,6 +6,7 @@ import HeroSection from "@/components/HeroSection";
 import WisdomSection from "@/components/WisdomSection";
 import MissionVisionValuesSection from "@/components/MissionVisionValuesSection";
 import FunEcosystemSection from "@/components/FunEcosystemSection";
+import CoreValuesSection from "@/components/CoreValuesSection";
 import MantrasSection from "@/components/MantrasSection";
 import FooterSection from "@/components/FooterSection";
 
@@ -44,6 +45,10 @@ const Index = () => {
 
         <section id="ecosystem">
           <FunEcosystemSection />
+        </section>
+
+        <section id="core-values">
+          <CoreValuesSection />
         </section>
 
         <section id="mantras">
