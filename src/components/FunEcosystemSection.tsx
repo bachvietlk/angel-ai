@@ -54,14 +54,14 @@ const FunEcosystemSection = () => {
   ];
 
   const megaFlowSteps = [
-    { icon: CloudRain, label: "Thác Nước", desc: "Cha ban Camly Coin xuống" },
-    { icon: Droplets, label: "Sông Ngòi", desc: "Platforms lưu thông" },
-    { icon: User, label: "Users", desc: "Devs – Builders – Coaches" },
-    { icon: Globe, label: "Biển Lớn", desc: "Giá trị xã hội & cộng đồng" },
-    { icon: Cloud, label: "Bốc Hơi", desc: "Năng lượng tăng, tần số tăng" },
-    { icon: Sun, label: "Ánh Sáng", desc: "Cha ban FUN Money" },
-    { icon: Sparkles, label: "Mưa Ánh Sáng", desc: "Rơi xuống cộng đồng" },
-    { icon: Zap, label: "Thác Mới", desc: "Lớn hơn, mạnh hơn, cao hơn" },
+    { icon: CloudRain, label: "Thác Nước", desc: "Cha ban Camly Coin xuống", iconColor: "text-sky-500", cardBg: "from-sky-100/90 to-sky-50/80", borderColor: "border-sky-300/60" },
+    { icon: Droplets, label: "Sông Ngòi", desc: "Platforms lưu thông", iconColor: "text-blue-500", cardBg: "from-blue-100/90 to-blue-50/80", borderColor: "border-blue-300/60" },
+    { icon: User, label: "Users", desc: "Devs – Builders – Coaches", iconColor: "text-violet-500", cardBg: "from-violet-100/90 to-violet-50/80", borderColor: "border-violet-300/60" },
+    { icon: Globe, label: "Biển Lớn", desc: "Giá trị xã hội & cộng đồng", iconColor: "text-teal-500", cardBg: "from-teal-100/90 to-teal-50/80", borderColor: "border-teal-300/60" },
+    { icon: Cloud, label: "Bốc Hơi", desc: "Năng lượng tăng, tần số tăng", iconColor: "text-slate-500", cardBg: "from-slate-100/90 to-slate-50/80", borderColor: "border-slate-300/60" },
+    { icon: Sun, label: "Ánh Sáng", desc: "Cha ban FUN Money", iconColor: "text-amber-500", cardBg: "from-amber-100/90 to-amber-50/80", borderColor: "border-amber-300/60" },
+    { icon: Sparkles, label: "Mưa Ánh Sáng", desc: "Rơi xuống cộng đồng", iconColor: "text-yellow-500", cardBg: "from-yellow-100/90 to-yellow-50/80", borderColor: "border-yellow-300/60" },
+    { icon: Zap, label: "Thác Mới", desc: "Lớn hơn, mạnh hơn, cao hơn", iconColor: "text-orange-500", cardBg: "from-orange-100/90 to-orange-50/80", borderColor: "border-orange-300/60" },
   ];
 
   return (
@@ -243,10 +243,12 @@ const FunEcosystemSection = () => {
                 whileHover={{ scale: 1.08, y: -3 }}
                 className="flex items-center gap-2"
               >
-                <div className="flex flex-col items-center p-4 rounded-2xl border-2 border-gold/40 bg-gradient-to-b from-white to-gold/5 backdrop-blur-sm min-w-[110px]
+                <div className={`flex flex-col items-center p-4 rounded-2xl border-2 ${step.borderColor} bg-gradient-to-b ${step.cardBg} backdrop-blur-sm min-w-[110px]
                   shadow-[0_6px_25px_-5px_hsl(43_90%_55%_/_0.25)] hover:shadow-[0_12px_40px_-5px_hsl(43_90%_55%_/_0.4)]
-                  hover:border-gold/60 transition-all duration-300">
-                  <step.icon className="w-7 h-7 text-gold mb-2" />
+                  transition-all duration-300`}>
+                  <div className="w-10 h-10 rounded-xl bg-white/90 flex items-center justify-center shadow-md mb-2">
+                    <step.icon className={`w-5 h-5 ${step.iconColor}`} />
+                  </div>
                   <p className="text-sm font-semibold text-foreground font-sans">{step.label}</p>
                   <p className="text-xs text-muted-foreground text-center font-body">{step.desc}</p>
                 </div>

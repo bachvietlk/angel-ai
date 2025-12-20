@@ -133,12 +133,12 @@ const NavBar = () => {
           </motion.a>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-6">
+          <div className="hidden lg:flex items-center gap-8">
             {navItems.map((item) => (
               <button
                 key={item.href}
                 onClick={() => handleNavClick(item)}
-                className="font-sans text-sm text-gold-dark hover:text-gold transition-colors relative group"
+                className="font-sans text-base md:text-lg font-medium text-gold-dark hover:text-gold transition-colors relative group"
               >
                 {item.label}
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-gold to-gold-light group-hover:w-full transition-all duration-300" />
