@@ -27,6 +27,7 @@ import {
   User as UserIcon,
 } from "lucide-react";
 import ChatImageGenerator from "@/components/ChatImageGenerator";
+import ImageCreationCard from "@/components/ImageCreationCard";
 import angelHero from "@/assets/angel-hero.png";
 
 interface Message {
@@ -468,8 +469,11 @@ const Chat = () => {
                   </div>
                 </motion.div>
 
+                {/* Image Creation Card - Prominent feature */}
+                <ImageCreationCard />
+
                 {/* Quick suggestions */}
-                <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-lg mx-auto">
+                <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-lg mx-auto">
                   {[
                     "8 Divine Mantras là gì?",
                     "FUN Ecosystem hoạt động như thế nào?",
@@ -480,7 +484,7 @@ const Chat = () => {
                       key={suggestion}
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.5 + i * 0.1 }}
+                      transition={{ delay: 0.7 + i * 0.1 }}
                     >
                       <Button
                         variant="outline"
