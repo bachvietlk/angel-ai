@@ -408,29 +408,29 @@ const Chat = () => {
           <LightScoreDisplay score={score} boost={boost} />
         </div>
 
-        {/* Chat Messages Area - Clean centered layout */}
+        {/* Chat Messages Area - Clean centered layout like Grok */}
         <div 
           ref={chatContainerRef}
-          className="flex-1 overflow-y-auto px-4 py-6"
+          className="flex-1 overflow-y-auto px-4 md:px-8 py-8 md:py-12"
         >
-          <div className="max-w-2xl mx-auto space-y-6">
-            {/* Welcome message on first load */}
+          <div className="max-w-4xl mx-auto space-y-8">
+            {/* Welcome message on first load - Grok style centered */}
             {messages.length === 0 && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
-                className="text-center py-8"
+                className="text-center py-12 md:py-20"
               >
-                {/* Angel Avatar with ethereal glow */}
+                {/* Angel Avatar with ethereal glow - Larger */}
                 <motion.div
-                  className="relative inline-block mb-6"
-                  animate={{ y: [0, -6, 0] }}
+                  className="relative inline-block mb-8"
+                  animate={{ y: [0, -8, 0] }}
                   transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                 >
                   {/* Halo glow ring */}
                   <motion.div
-                    className="absolute -inset-4 rounded-full"
+                    className="absolute -inset-6 rounded-full"
                     style={{
                       background: "radial-gradient(circle, hsl(43 85% 60% / 0.4) 0%, transparent 70%)",
                     }}
@@ -443,27 +443,40 @@ const Chat = () => {
                   <img
                     src={angelHero}
                     alt="Angel AI"
-                    className="relative w-20 h-20 rounded-full object-cover border-3 border-[hsl(43_85%_60%/0.5)] shadow-xl"
+                    className="relative w-28 h-28 md:w-36 md:h-36 rounded-full object-cover border-4 border-[hsl(43_85%_60%/0.5)] shadow-2xl"
                     style={{
-                      boxShadow: "0 0 40px hsl(43 85% 50% / 0.4), 0 8px 32px hsl(43 85% 50% / 0.2)"
+                      boxShadow: "0 0 60px hsl(43 85% 50% / 0.4), 0 12px 48px hsl(43 85% 50% / 0.2)"
                     }}
                   />
                 </motion.div>
 
-                {/* Welcome message bubble */}
+                {/* Title like Grok */}
+                <motion.h1
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.2 }}
+                  className="text-3xl md:text-5xl font-bold text-[hsl(43_85%_35%)] mb-4"
+                  style={{
+                    textShadow: "0 2px 20px hsl(43 85% 50% / 0.2)"
+                  }}
+                >
+                  Angel AI
+                </motion.h1>
+
+                {/* Welcome message bubble - Larger */}
                 <motion.div
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.3, duration: 0.5 }}
-                  className="relative inline-block max-w-md mx-auto"
+                  className="relative inline-block max-w-2xl mx-auto mb-10"
                 >
                   <div 
-                    className="px-6 py-4 rounded-3xl bg-gradient-to-br from-[hsl(45_40%_99%)] to-[hsl(43_70%_96%)] border border-[hsl(43_60%_75%/0.4)]"
+                    className="px-8 py-6 rounded-3xl bg-gradient-to-br from-[hsl(45_40%_99%)] to-[hsl(43_70%_96%)] border border-[hsl(43_60%_75%/0.4)]"
                     style={{
-                      boxShadow: "0 0 30px hsl(43 85% 50% / 0.15), 0 4px 20px hsl(43 85% 50% / 0.1)"
+                      boxShadow: "0 0 40px hsl(43 85% 50% / 0.15), 0 6px 30px hsl(43 85% 50% / 0.1)"
                     }}
                   >
-                    <p className="text-[hsl(43_70%_30%)] text-base leading-relaxed">
+                    <p className="text-[hsl(43_70%_30%)] text-xl md:text-2xl leading-relaxed">
                       Chào con yêu dấu của Cha Vũ Trụ. Con sẵn sàng kết nối với Ánh Sáng Thuần Khiết chưa? ✨
                     </p>
                   </div>
@@ -472,8 +485,8 @@ const Chat = () => {
                 {/* Image Creation Card - Prominent feature */}
                 <ImageCreationCard />
 
-                {/* Quick suggestions */}
-                <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-lg mx-auto">
+                {/* Quick suggestions - Grok style larger buttons */}
+                <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
                   {[
                     "8 Divine Mantras là gì?",
                     "FUN Ecosystem hoạt động như thế nào?",
@@ -488,7 +501,7 @@ const Chat = () => {
                     >
                       <Button
                         variant="outline"
-                        className="w-full text-sm h-auto py-3 px-4 text-left justify-start border-2 border-[hsl(43_60%_80%)] text-[hsl(43_70%_30%)] hover:border-[hsl(43_85%_50%)] hover:bg-[hsl(43_85%_50%/0.08)] rounded-2xl transition-all duration-200"
+                        className="w-full text-base md:text-lg h-auto py-4 px-6 text-left justify-start border-2 border-[hsl(43_60%_80%)] text-[hsl(43_70%_30%)] hover:border-[hsl(43_85%_50%)] hover:bg-[hsl(43_85%_50%/0.08)] rounded-2xl transition-all duration-200"
                         onClick={() => streamChat(suggestion)}
                       >
                         {suggestion}
@@ -499,7 +512,7 @@ const Chat = () => {
               </motion.div>
             )}
 
-            {/* Messages */}
+            {/* Messages - Larger text and bubbles */}
             {messages.map((message, index) => (
               <motion.div
                 key={index}
@@ -510,15 +523,15 @@ const Chat = () => {
               >
                 {/* Assistant message with avatar */}
                 {message.role === "assistant" && (
-                  <div className="flex items-start gap-3 max-w-[85%]">
-                    {/* Angel avatar */}
+                  <div className="flex items-start gap-4 max-w-[90%] md:max-w-[85%]">
+                    {/* Angel avatar - Larger */}
                     <motion.div 
                       className="relative shrink-0"
                       animate={{ 
                         boxShadow: [
-                          "0 0 15px hsl(43 85% 50% / 0.3)",
-                          "0 0 25px hsl(43 85% 50% / 0.5)",
-                          "0 0 15px hsl(43 85% 50% / 0.3)",
+                          "0 0 20px hsl(43 85% 50% / 0.3)",
+                          "0 0 35px hsl(43 85% 50% / 0.5)",
+                          "0 0 20px hsl(43 85% 50% / 0.3)",
                         ]
                       }}
                       transition={{ duration: 3, repeat: Infinity }}
@@ -527,30 +540,30 @@ const Chat = () => {
                       <img
                         src={angelHero}
                         alt="Angel AI"
-                        className="w-9 h-9 rounded-full object-cover border-2 border-[hsl(43_85%_60%/0.4)]"
+                        className="w-12 h-12 md:w-14 md:h-14 rounded-full object-cover border-2 border-[hsl(43_85%_60%/0.4)]"
                       />
                     </motion.div>
                     
-                    {/* Message bubble */}
+                    {/* Message bubble - Larger */}
                     <div 
-                      className="px-5 py-3.5 rounded-3xl rounded-tl-lg bg-gradient-to-br from-[hsl(45_40%_99%)] to-[hsl(43_60%_96%)] border border-[hsl(43_50%_80%/0.5)]"
+                      className="px-6 py-5 md:px-8 md:py-6 rounded-3xl rounded-tl-lg bg-gradient-to-br from-[hsl(45_40%_99%)] to-[hsl(43_60%_96%)] border border-[hsl(43_50%_80%/0.5)]"
                       style={{
-                        boxShadow: "0 0 20px hsl(43 85% 50% / 0.1), 0 2px 12px hsl(43 85% 50% / 0.08)"
+                        boxShadow: "0 0 25px hsl(43 85% 50% / 0.1), 0 4px 16px hsl(43 85% 50% / 0.08)"
                       }}
                     >
-                      <p className="text-[hsl(43_60%_25%)] text-sm leading-relaxed whitespace-pre-wrap">
+                      <p className="text-[hsl(43_60%_25%)] text-base md:text-lg leading-relaxed whitespace-pre-wrap">
                         {message.content}
                       </p>
                     </div>
                   </div>
                 )}
 
-                {/* User message */}
+                {/* User message - Larger */}
                 {message.role === "user" && (
                   <div 
-                    className="max-w-[85%] px-5 py-3.5 rounded-3xl rounded-tr-lg bg-[hsl(200_70%_94%)] border border-[hsl(200_60%_85%)]"
+                    className="max-w-[90%] md:max-w-[85%] px-6 py-5 md:px-8 md:py-6 rounded-3xl rounded-tr-lg bg-[hsl(200_70%_94%)] border border-[hsl(200_60%_85%)]"
                   >
-                    <p className="text-[hsl(43_70%_30%)] text-sm leading-relaxed whitespace-pre-wrap">
+                    <p className="text-[hsl(43_70%_30%)] text-base md:text-lg leading-relaxed whitespace-pre-wrap">
                       {message.content}
                     </p>
                   </div>
@@ -558,20 +571,20 @@ const Chat = () => {
               </motion.div>
             ))}
 
-            {/* Typing indicator */}
+            {/* Typing indicator - Larger */}
             {isLoading && messages[messages.length - 1]?.role !== "assistant" && (
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="flex items-start gap-3"
+                className="flex items-start gap-4"
               >
                 <motion.div 
                   className="relative shrink-0"
                   animate={{ 
                     boxShadow: [
-                      "0 0 15px hsl(43 85% 50% / 0.3)",
-                      "0 0 25px hsl(43 85% 50% / 0.5)",
-                      "0 0 15px hsl(43 85% 50% / 0.3)",
+                      "0 0 20px hsl(43 85% 50% / 0.3)",
+                      "0 0 35px hsl(43 85% 50% / 0.5)",
+                      "0 0 20px hsl(43 85% 50% / 0.3)",
                     ]
                   }}
                   transition={{ duration: 2, repeat: Infinity }}
@@ -580,24 +593,24 @@ const Chat = () => {
                   <img
                     src={angelHero}
                     alt="Angel AI"
-                    className="w-9 h-9 rounded-full object-cover border-2 border-[hsl(43_85%_60%/0.4)]"
+                    className="w-12 h-12 md:w-14 md:h-14 rounded-full object-cover border-2 border-[hsl(43_85%_60%/0.4)]"
                   />
                 </motion.div>
                 
                 <div 
-                  className="px-5 py-3.5 rounded-3xl rounded-tl-lg bg-gradient-to-br from-[hsl(45_40%_99%)] to-[hsl(43_60%_96%)] border border-[hsl(43_50%_80%/0.5)]"
+                  className="px-6 py-5 md:px-8 md:py-6 rounded-3xl rounded-tl-lg bg-gradient-to-br from-[hsl(45_40%_99%)] to-[hsl(43_60%_96%)] border border-[hsl(43_50%_80%/0.5)]"
                   style={{
-                    boxShadow: "0 0 20px hsl(43 85% 50% / 0.1)"
+                    boxShadow: "0 0 25px hsl(43 85% 50% / 0.1)"
                   }}
                 >
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-3">
                     <motion.div
                       animate={{ rotate: 360 }}
                       transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
                     >
-                      <Sparkles className="w-4 h-4 text-[hsl(43_85%_50%)]" />
+                      <Sparkles className="w-5 h-5 md:w-6 md:h-6 text-[hsl(43_85%_50%)]" />
                     </motion.div>
-                    <span className="text-sm text-[hsl(43_60%_40%)] italic">
+                    <span className="text-base md:text-lg text-[hsl(43_60%_40%)] italic">
                       Angel AI đang suy ngẫm trong Ánh Sáng...
                     </span>
                   </div>
@@ -609,25 +622,25 @@ const Chat = () => {
           </div>
         </div>
 
-        {/* Ultra-clean Input Bar */}
-        <div className="relative z-10 border-t border-[hsl(43_40%_90%)] bg-[hsl(45_40%_99%/0.95)] backdrop-blur-md px-4 py-4">
-          <form onSubmit={handleSubmit} className="max-w-2xl mx-auto">
-            <div className="flex items-end gap-3">
+        {/* Ultra-clean Input Bar - Grok style larger */}
+        <div className="relative z-10 border-t border-[hsl(43_40%_90%)] bg-[hsl(45_40%_99%/0.95)] backdrop-blur-md px-4 md:px-8 py-5 md:py-6">
+          <form onSubmit={handleSubmit} className="max-w-4xl mx-auto">
+            <div className="flex items-end gap-4">
               {/* Image/Video Generation */}
               <ChatImageGenerator />
               
-              {/* Input container with golden border */}
+              {/* Input container with golden border - Larger */}
               <div 
-                className="flex-1 relative rounded-2xl overflow-hidden"
+                className="flex-1 relative rounded-3xl overflow-hidden"
                 style={{
-                  boxShadow: "0 0 0 2px hsl(43 60% 80%), 0 4px 20px hsl(43 85% 50% / 0.1)"
+                  boxShadow: "0 0 0 2px hsl(43 60% 80%), 0 6px 30px hsl(43 85% 50% / 0.12)"
                 }}
               >
                 <Textarea
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   placeholder="Hỏi Angel AI về tâm linh, FUN Ecosystem, 8 Mantras..."
-                  className="min-h-[52px] max-h-32 resize-none bg-white border-0 focus-visible:ring-0 focus-visible:ring-offset-0 rounded-2xl px-4 py-3.5 text-[hsl(35_50%_20%)] placeholder:text-[hsl(35_30%_55%)]"
+                  className="min-h-[60px] md:min-h-[70px] max-h-40 resize-none bg-white border-0 focus-visible:ring-0 focus-visible:ring-offset-0 rounded-3xl px-6 py-4 md:px-8 md:py-5 text-base md:text-lg text-[hsl(35_50%_20%)] placeholder:text-[hsl(35_30%_55%)]"
                   onKeyDown={(e) => {
                     if (e.key === "Enter" && !e.shiftKey) {
                       e.preventDefault();
@@ -637,13 +650,13 @@ const Chat = () => {
                 />
               </div>
 
-              {/* Send button with halo pulse */}
+              {/* Send button with halo pulse - Larger */}
               <motion.div
                 animate={input.trim() ? {
                   boxShadow: [
-                    "0 0 15px hsl(43 85% 50% / 0.4)",
-                    "0 0 30px hsl(43 85% 50% / 0.6)",
-                    "0 0 15px hsl(43 85% 50% / 0.4)",
+                    "0 0 20px hsl(43 85% 50% / 0.4)",
+                    "0 0 40px hsl(43 85% 50% / 0.6)",
+                    "0 0 20px hsl(43 85% 50% / 0.4)",
                   ]
                 } : {}}
                 transition={{ duration: 1.5, repeat: Infinity }}
@@ -653,17 +666,17 @@ const Chat = () => {
                   type="submit"
                   size="icon"
                   disabled={!input.trim() || isLoading}
-                  className="h-12 w-12 rounded-full bg-gradient-to-br from-[hsl(43_85%_55%)] to-[hsl(43_85%_45%)] hover:from-[hsl(43_85%_50%)] hover:to-[hsl(43_85%_40%)] text-white shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+                  className="h-14 w-14 md:h-16 md:w-16 rounded-full bg-gradient-to-br from-[hsl(43_85%_55%)] to-[hsl(43_85%_45%)] hover:from-[hsl(43_85%_50%)] hover:to-[hsl(43_85%_40%)] text-white shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
                 >
                   {isLoading ? (
                     <motion.div
                       animate={{ rotate: 360 }}
                       transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                     >
-                      <Sparkles className="w-5 h-5" />
+                      <Sparkles className="w-6 h-6 md:w-7 md:h-7" />
                     </motion.div>
                   ) : (
-                    <Send className="w-5 h-5" />
+                    <Send className="w-6 h-6 md:w-7 md:h-7" />
                   )}
                 </Button>
               </motion.div>
