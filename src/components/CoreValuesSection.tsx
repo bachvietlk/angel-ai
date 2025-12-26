@@ -205,7 +205,7 @@ const CoreValuesSection = () => {
         </motion.div>
 
         {/* Cards Grid - Enhanced layout */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-5">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-5">
           {coreValues.map((value, index) => {
             const Icon = value.icon;
 
@@ -217,28 +217,25 @@ const CoreValuesSection = () => {
                 viewport={{ once: true }}
                 transition={{ 
                   duration: 0.5, 
-                  delay: index * 0.06,
+                  delay: index * 0.05,
                   type: "spring",
                   stiffness: 100
                 }}
                 className="group"
               >
                 <motion.div
-                  className="relative rounded-2xl overflow-hidden transition-all duration-500
-                    bg-white/90 backdrop-blur-sm border border-gold/20 
-                    shadow-[0_8px_30px_-10px_hsl(43_90%_55%_/_0.2)] 
-                    hover:border-gold/50 hover:shadow-[0_15px_50px_-10px_hsl(43_90%_55%_/_0.35)]"
-                  whileHover={{ y: -8, scale: 1.02 }}
+                  className="relative h-full rounded-xl overflow-hidden transition-all duration-500
+                    bg-white/95 backdrop-blur-sm border border-gold/20 
+                    shadow-[0_4px_20px_-8px_hsl(43_90%_55%_/_0.15)] 
+                    hover:border-gold/40 hover:shadow-[0_8px_30px_-8px_hsl(43_90%_55%_/_0.25)]"
+                  whileHover={{ y: -6, scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  {/* Number Badge - Enhanced */}
+                  {/* Number Badge */}
                   <motion.div
-                    className={`absolute -top-1 -right-1 w-8 h-8 rounded-full bg-gradient-to-br ${value.gradient} 
-                      flex items-center justify-center text-white text-sm font-bold z-10`}
-                    style={{
-                      boxShadow: "0 4px 15px hsl(43 90% 55% / 0.4)",
-                    }}
-                    whileHover={{ scale: 1.2, rotate: 10 }}
+                    className={`absolute -top-1 -right-1 w-7 h-7 rounded-full bg-gradient-to-br ${value.gradient} 
+                      flex items-center justify-center text-white text-xs font-bold z-10 shadow-md`}
+                    whileHover={{ scale: 1.15 }}
                   >
                     {value.number}
                   </motion.div>
@@ -247,30 +244,27 @@ const CoreValuesSection = () => {
                   <div className={`absolute inset-0 bg-gradient-to-b ${value.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-500`} />
                   
                   {/* Top accent line */}
-                  <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${value.gradient} opacity-60`} />
+                  <div className={`absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r ${value.gradient} opacity-70`} />
 
-                  <div className="p-4 md:p-5 text-center">
+                  <div className="p-4 text-center flex flex-col h-full">
                     {/* Icon with gradient background */}
                     <motion.div
-                      className={`w-14 h-14 mx-auto mb-3 rounded-xl bg-gradient-to-br ${value.gradient} 
-                        flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}
-                      style={{
-                        boxShadow: `0 8px 25px hsl(43 90% 55% / 0.25)`,
-                      }}
-                      whileHover={{ rotate: [0, -5, 5, 0] }}
-                      transition={{ duration: 0.5 }}
+                      className={`w-12 h-12 mx-auto mb-3 rounded-lg bg-gradient-to-br ${value.gradient} 
+                        flex items-center justify-center group-hover:scale-105 transition-transform duration-300 shadow-md`}
+                      whileHover={{ rotate: [0, -3, 3, 0] }}
+                      transition={{ duration: 0.4 }}
                     >
-                      <Icon className="w-7 h-7 text-white drop-shadow-sm" />
+                      <Icon className="w-6 h-6 text-white" />
                     </motion.div>
 
                     {/* Title */}
-                    <h3 className="font-display text-sm md:text-base font-bold text-foreground group-hover:text-gold transition-colors mb-3 leading-tight">
+                    <h3 className="font-display text-sm font-bold text-foreground group-hover:text-gold transition-colors mb-2 leading-tight min-h-[2.5rem] flex items-center justify-center">
                       {value.title}
                     </h3>
 
-                    {/* Description - Always visible */}
-                    <div className="pt-2 border-t border-gold/20">
-                      <p className="text-xs md:text-sm text-muted-foreground leading-relaxed font-body">
+                    {/* Description */}
+                    <div className="pt-2 border-t border-gold/15 flex-1">
+                      <p className="text-xs text-muted-foreground leading-relaxed font-body">
                         {value.description}
                       </p>
                     </div>
