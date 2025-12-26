@@ -76,7 +76,7 @@ const WisdomSection = () => {
         </motion.div>
 
         {/* Three Sacred Pillars - Light Columns */}
-        <div className="grid md:grid-cols-3 gap-8 lg:gap-12">
+        <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
           {pillars.map((pillar, index) => (
             <motion.div
               key={index}
@@ -84,12 +84,12 @@ const WisdomSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: index * 0.2 }}
               viewport={{ once: true }}
-              whileHover={{ y: -15 }}
+              whileHover={{ y: -10 }}
               className="group relative"
             >
               {/* Light beam from above */}
               <motion.div 
-                className="absolute -top-32 left-1/2 -translate-x-1/2 w-px h-32"
+                className="absolute -top-24 left-1/2 -translate-x-1/2 w-px h-24"
                 style={{ background: pillar.glowStyle.beamColor }}
                 initial={{ opacity: 0, scaleY: 0 }}
                 whileInView={{ opacity: 0.4, scaleY: 1 }}
@@ -99,56 +99,54 @@ const WisdomSection = () => {
               
               {/* Light column card */}
               <div 
-                className="relative p-8 md:p-10 rounded-3xl bg-card/30 backdrop-blur-xl border border-gold/10 
-                  group-hover:border-gold/30 transition-all duration-700 overflow-hidden"
-                style={{
-                  boxShadow: `0 0 0 hsl(43 90% 55% / 0)`,
-                }}
+                className="relative h-full p-6 md:p-8 rounded-2xl bg-white/95 backdrop-blur-xl border border-gold/20 
+                  group-hover:border-gold/40 transition-all duration-500 overflow-hidden
+                  shadow-[0_4px_30px_-10px_hsl(43_90%_55%_/_0.15)]
+                  group-hover:shadow-[0_8px_40px_-10px_hsl(43_90%_55%_/_0.3)]"
               >
                 {/* Top glow bar */}
                 <motion.div 
                   className={`absolute top-0 left-1/2 -translate-x-1/2 h-1 bg-gradient-to-r ${pillar.glowStyle.titleGradient} rounded-full`}
                   initial={{ width: "3rem" }}
-                  whileHover={{ width: "70%" }}
+                  whileHover={{ width: "60%" }}
                   transition={{ duration: 0.5 }}
                 />
                 
                 {/* Background glow on hover */}
                 <div 
-                  className={`absolute top-0 left-1/2 -translate-x-1/2 w-60 h-60 bg-gradient-to-b ${pillar.glowStyle.iconBg} opacity-0 group-hover:opacity-30 blur-3xl transition-opacity duration-700`}
+                  className={`absolute top-0 left-1/2 -translate-x-1/2 w-48 h-48 bg-gradient-to-b ${pillar.glowStyle.iconBg} opacity-0 group-hover:opacity-20 blur-3xl transition-opacity duration-700`}
                 />
                 
                 {/* Floating icon */}
                 <motion.div
-                  animate={{ y: [0, -6, 0] }}
+                  animate={{ y: [0, -5, 0] }}
                   transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: index * 0.4 }}
-                  className="relative mb-8 flex justify-center"
+                  className="relative mb-6 flex justify-center"
                 >
                   <div 
-                    className={`w-20 h-20 rounded-2xl bg-gradient-to-br ${pillar.glowStyle.iconBg} backdrop-blur-sm flex items-center justify-center`}
+                    className={`w-16 h-16 rounded-xl bg-gradient-to-br ${pillar.glowStyle.iconBg} backdrop-blur-sm flex items-center justify-center border border-gold/10`}
                     style={{ boxShadow: pillar.glowStyle.shadow }}
                   >
-                    <pillar.icon className="w-10 h-10 text-foreground/90" />
+                    <pillar.icon className="w-8 h-8 text-foreground/80" />
                   </div>
                 </motion.div>
 
                 {/* Title with glow */}
                 <h3 
-                  className={`font-display text-xl md:text-2xl font-bold text-center mb-5 bg-gradient-to-r ${pillar.glowStyle.titleGradient} bg-clip-text text-transparent`}
-                  style={{ textShadow: pillar.glowStyle.shadow }}
+                  className={`font-display text-lg md:text-xl font-bold text-center mb-4 bg-gradient-to-r ${pillar.glowStyle.titleGradient} bg-clip-text text-transparent leading-tight min-h-[3.5rem] flex items-center justify-center`}
                 >
                   {pillar.title}
                 </h3>
 
                 {/* Subtitle */}
-                <p className="font-elegant text-base md:text-lg text-muted-foreground/80 text-center leading-relaxed">
+                <p className="font-body text-sm md:text-base text-muted-foreground text-center leading-relaxed">
                   {pillar.subtitle}
                 </p>
               </div>
 
               {/* Light beam to below */}
               <motion.div 
-                className="absolute -bottom-20 left-1/2 -translate-x-1/2 w-px h-20"
+                className="absolute -bottom-16 left-1/2 -translate-x-1/2 w-px h-16"
                 style={{ background: pillar.glowStyle.beamColor }}
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 0.2 }}
