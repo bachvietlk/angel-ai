@@ -1,6 +1,6 @@
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { Sparkles, ChevronDown, Heart, Star, Play } from "lucide-react";
+import { Sparkles, Heart, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import angelHero from "@/assets/angel-hero.png";
 import divineLightVideo from "@/assets/divine-light-bg.mp4";
@@ -14,26 +14,12 @@ const HeroSection = ({ onCtaClick }: HeroSectionProps) => {
   const navigate = useNavigate();
   const sectionRef = useRef<HTMLDivElement>(null);
   const [videoLoaded, setVideoLoaded] = useState(false);
-  
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start start", "end start"]
-  });
 
-  // Parallax transforms - smooth and subtle, keep text visible longer
-  const backgroundY = useTransform(scrollYProgress, [0, 1], [0, 100]);
-  const angelY = useTransform(scrollYProgress, [0, 1], [0, -40]);
-  const textY = useTransform(scrollYProgress, [0, 1], [0, 50]);
-  const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0.3]); // Keep visible longer
-  const scale = useTransform(scrollYProgress, [0, 0.6], [1, 0.98]);
   
   return (
-    <section ref={sectionRef} className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+    <section ref={sectionRef} className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Divine Light Video Background */}
-      <motion.div 
-        className="absolute inset-0 z-0"
-        style={{ y: backgroundY }}
-      >
+      <div className="absolute inset-0 z-0">
         <video
           autoPlay
           loop
@@ -49,22 +35,18 @@ const HeroSection = ({ onCtaClick }: HeroSectionProps) => {
         <div 
           className={`absolute inset-0 bg-gradient-to-b from-background via-gold/5 to-background transition-opacity duration-1000 ${videoLoaded ? 'opacity-60' : 'opacity-100'}`}
         />
-      </motion.div>
+      </div>
       
       {/* Radiant gradient overlay */}
-      <motion.div 
+      <div 
         className="absolute inset-0 z-[1]"
         style={{
-          background: "radial-gradient(ellipse at 50% 40%, hsl(43 80% 95% / 0.7) 0%, transparent 60%)",
-          y: backgroundY
+          background: "radial-gradient(ellipse at 50% 40%, hsl(43 80% 95% / 0.7) 0%, transparent 60%)"
         }}
       />
 
       {/* Sacred geometry patterns - very subtle */}
-      <motion.div 
-        className="absolute inset-0 opacity-[0.025] z-[1]" 
-        style={{ y: backgroundY }}
-      >
+      <div className="absolute inset-0 opacity-[0.025] z-[1]">
         <svg className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1400px] h-[1400px]" viewBox="0 0 400 400">
           {/* Flower of Life pattern */}
           {[0, 60, 120, 180, 240, 300].map((angle, i) => (
@@ -85,14 +67,13 @@ const HeroSection = ({ onCtaClick }: HeroSectionProps) => {
           <circle cx="200" cy="200" r="100" fill="none" stroke="hsl(43 85% 50%)" strokeWidth="0.4" />
           <circle cx="200" cy="200" r="150" fill="none" stroke="hsl(43 85% 50%)" strokeWidth="0.25" />
         </svg>
-      </motion.div>
+      </div>
 
       {/* Central divine halo glow */}
       <motion.div 
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full z-[2]"
         style={{
-          background: "radial-gradient(circle, hsl(43 80% 80% / 0.25) 0%, hsl(43 80% 90% / 0.1) 40%, transparent 70%)",
-          opacity
+          background: "radial-gradient(circle, hsl(43 80% 80% / 0.25) 0%, hsl(43 80% 90% / 0.1) 40%, transparent 70%)"
         }}
         animate={{
           scale: [1, 1.06, 1],
@@ -100,10 +81,7 @@ const HeroSection = ({ onCtaClick }: HeroSectionProps) => {
         transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      <motion.div 
-        className="relative z-10 container mx-auto px-6" 
-        style={{ opacity, scale }}
-      >
+      <div className="relative z-10 container mx-auto px-6 py-24 md:py-32">
         <div className="flex flex-col items-center justify-center text-center">
           
           {/* Enhanced Angel Logo with Divine Glow */}
@@ -112,7 +90,6 @@ const HeroSection = ({ onCtaClick }: HeroSectionProps) => {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 1.2, ease: "easeOut" }}
             className="relative mb-8"
-            style={{ y: angelY }}
           >
             {/* Rotating halo rings */}
             <motion.div
@@ -195,7 +172,6 @@ const HeroSection = ({ onCtaClick }: HeroSectionProps) => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.4 }}
             className="relative mb-5"
-            style={{ y: textY }}
           >
             {/* Background glow for title */}
             <div className="absolute inset-0 blur-2xl bg-gold/20 -z-10" />
@@ -248,7 +224,6 @@ const HeroSection = ({ onCtaClick }: HeroSectionProps) => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.7 }}
             className="relative mb-3 px-7 py-3 rounded-full bg-white/80 border border-gold/40 backdrop-blur-md shadow-lg"
-            style={{ y: textY }}
           >
             <p 
               className="font-elegant text-xl md:text-2xl lg:text-3xl font-bold"
@@ -267,10 +242,7 @@ const HeroSection = ({ onCtaClick }: HeroSectionProps) => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.9 }}
             className="font-elegant text-base md:text-lg italic mb-10 font-medium"
-            style={{ 
-              y: textY,
-              color: "hsl(43 60% 40%)"
-            }}
+            style={{ color: "hsl(43 60% 40%)" }}
           >
             The Divine Light of Father Universe ✨
           </motion.p>
@@ -281,7 +253,6 @@ const HeroSection = ({ onCtaClick }: HeroSectionProps) => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1.1 }}
             className="flex flex-col sm:flex-row gap-4"
-            style={{ y: textY }}
           >
             {/* Primary CTA */}
             <motion.div
@@ -327,8 +298,7 @@ const HeroSection = ({ onCtaClick }: HeroSectionProps) => {
             </Button>
           </motion.div>
         </div>
-
-      </motion.div>
+      </div>
 
       {/* Scroll indicator - positioned outside container for visibility */}
       <motion.div
