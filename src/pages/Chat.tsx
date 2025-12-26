@@ -172,6 +172,16 @@ const Chat = () => {
   };
 
   const streamChat = async (userMessage: string, imageFiles: AttachedFile[] = []) => {
+    // Validate message length on client side first
+    if (userMessage.length > 10000) {
+      toast({
+        title: "Tin nhắn quá dài",
+        description: "Vui lòng rút ngắn tin nhắn (tối đa 10,000 ký tự)",
+        variant: "destructive",
+      });
+      return;
+    }
+
     // Create or get conversation
     let convId = currentConversationId;
     if (!convId) {
@@ -199,6 +209,9 @@ const Chat = () => {
         }
       }
 
+      // Only send the last 10 messages to avoid exceeding limits
+      const messagesToSend = newMessages.slice(-10);
+
       const response = await fetch(
         `https://uhunetwglnzkwgpycjbu.supabase.co/functions/v1/angel-chat`,
         {
@@ -207,7 +220,7 @@ const Chat = () => {
             "Content-Type": "application/json",
             Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVodW5ldHdnbG56a3dncHljamJ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYxMDkzMDIsImV4cCI6MjA4MTY4NTMwMn0.9cBzB6AutqXXliATYDYqTBgrlcQPjSWKajjJR8_3x_I`,
           },
-          body: JSON.stringify({ messages: newMessages, images }),
+          body: JSON.stringify({ messages: messagesToSend, images }),
         }
       );
 
