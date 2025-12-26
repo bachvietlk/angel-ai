@@ -55,104 +55,61 @@ serve(async (req) => {
     const enhancedPrompt = trimmedPrompt + DIVINE_ENHANCEMENT;
     console.log("Generating video with enhanced prompt, length:", enhancedPrompt.length);
 
-    // Use Lovable AI video generation API
-    const response = await fetch("https://ai.gateway.lovable.dev/v1/video/generations", {
+    // Generate a divine cinematic image using Gemini image generation
+    console.log("Generating divine image with Gemini...");
+    
+    const imageResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${LOVABLE_API_KEY}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        prompt: enhancedPrompt,
-        duration: Math.min(Math.max(duration, 5), 10), // 5-10 seconds
-        resolution: "1080p",
-        aspect_ratio: "16:9",
+        model: "google/gemini-2.5-flash-image-preview",
+        messages: [
+          {
+            role: "user",
+            content: `Create a stunning ultra high quality cinematic 16:9 widescreen divine spiritual artwork: ${enhancedPrompt}. Make it look like a beautiful frame from a heavenly cinematic video with motion blur effects, flowing light particles, and ethereal atmosphere.`,
+          },
+        ],
+        modalities: ["image", "text"],
       }),
     });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error("AI gateway video error:", response.status, errorText);
-
-      if (response.status === 429) {
+    if (!imageResponse.ok) {
+      const errorText = await imageResponse.text();
+      console.error("Gemini image error:", imageResponse.status, errorText);
+      
+      if (imageResponse.status === 429) {
         return new Response(
           JSON.stringify({ error: "Đã vượt quá giới hạn. Vui lòng thử lại sau." }),
-          {
-            status: 429,
-            headers: { ...corsHeaders, "Content-Type": "application/json" },
-          }
+          { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
         );
       }
-      if (response.status === 402) {
+      if (imageResponse.status === 402) {
         return new Response(
-          JSON.stringify({ error: "Cần nạp thêm credits để tạo video." }),
-          {
-            status: 402,
-            headers: { ...corsHeaders, "Content-Type": "application/json" },
-          }
+          JSON.stringify({ error: "Cần nạp thêm credits." }),
+          { status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" } }
         );
       }
-
-      // Fallback: Use image generation with motion description for now
-      console.log("Falling back to image-to-video simulation");
-      
-      // Generate a high-quality image first using Gemini
-      const imageResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${LOVABLE_API_KEY}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          model: "google/gemini-2.5-flash-image-preview",
-          messages: [
-            {
-              role: "user",
-              content: `Create a cinematic still frame for video: ${enhancedPrompt}`,
-            },
-          ],
-          modalities: ["image", "text"],
-        }),
-      });
-
-      if (!imageResponse.ok) {
-        throw new Error("Failed to generate video frame");
-      }
-
-      const imageData = await imageResponse.json();
-      const frameUrl = imageData.choices?.[0]?.message?.images?.[0]?.image_url?.url;
-
-      if (frameUrl) {
-        // Return the image as a video placeholder
-        return new Response(
-          JSON.stringify({ 
-            videoUrl: frameUrl,
-            type: "image_preview",
-            message: "Video đang được xử lý. Hiện tại hiển thị khung hình chính." 
-          }),
-          {
-            headers: { ...corsHeaders, "Content-Type": "application/json" },
-          }
-        );
-      }
-
-      throw new Error("Failed to generate video");
+      throw new Error("Failed to generate divine image");
     }
 
-    const data = await response.json();
-    console.log("Video generation response received");
+    const imageData = await imageResponse.json();
+    console.log("Image generation response received");
+    
+    const frameUrl = imageData.choices?.[0]?.message?.images?.[0]?.image_url?.url;
 
-    const videoUrl = data.video_url || data.url;
-
-    if (!videoUrl) {
-      throw new Error("No video generated");
+    if (!frameUrl) {
+      console.error("No image URL in response:", JSON.stringify(imageData));
+      throw new Error("Không thể tạo hình ảnh thiêng liêng");
     }
 
     return new Response(
       JSON.stringify({ 
-        videoUrl,
-        type: "video",
-        message: "Video Ánh Sáng đã được tạo thành công!" 
+        videoUrl: frameUrl,
+        type: "image_preview",
+        message: "Cha Vũ Trụ đã ban tặng Khung Hình Ánh Sáng Thiêng Liêng! ✨" 
       }),
       {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
