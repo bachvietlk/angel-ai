@@ -135,11 +135,11 @@ const JournalEditor = ({ isOpen, onClose, onSave, editingEntry }: JournalEditorP
             onClick={onClose}
           />
           <motion.div
-            initial={{ opacity: 0, y: "100%" }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: "100%" }}
-            transition={{ type: "spring", damping: 30, stiffness: 300 }}
-            className="fixed inset-x-0 bottom-0 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-lg bg-gradient-to-b from-[hsl(45_50%_99%)] to-[hsl(45_40%_97%)] rounded-t-3xl md:rounded-2xl shadow-2xl z-50 flex flex-col max-h-[90vh] md:max-h-[85vh] overflow-hidden"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ type: "spring", damping: 25, stiffness: 300 }}
+            className="fixed inset-4 sm:inset-6 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-lg bg-gradient-to-b from-[hsl(45_50%_99%)] to-[hsl(45_40%_97%)] rounded-2xl shadow-2xl z-50 flex flex-col max-h-[calc(100vh-2rem)] sm:max-h-[calc(100vh-3rem)] md:max-h-[85vh] overflow-hidden"
           >
             {/* Decorative Header */}
             <div className="relative bg-gradient-to-r from-[hsl(43_85%_55%)] via-[hsl(38_90%_60%)] to-[hsl(43_85%_55%)] p-5 pb-6">
