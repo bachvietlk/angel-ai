@@ -34,6 +34,7 @@ import {
   Video,
   MessageCircle,
   Mic,
+  BookOpen,
 } from "lucide-react";
 
 import ChatAttachButton, { AttachedFilesPreview, AttachedFile } from "@/components/ChatAttachButton";
@@ -468,6 +469,25 @@ const Chat = () => {
                     <div className="text-left">
                       <p className="font-medium text-sm">Lịch sử Chat</p>
                       <p className="text-[10px] opacity-80">{conversations.length} cuộc trò chuyện</p>
+                    </div>
+                  </motion.button>
+
+                  {/* Spiritual Journal */}
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => {
+                      setSidebarOpen(false);
+                      navigate("/journal");
+                    }}
+                    className="w-full flex items-center gap-3 p-3 rounded-xl bg-gradient-to-r from-[hsl(330_70%_55%)] to-[hsl(330_70%_45%)] text-white hover:from-[hsl(330_70%_50%)] hover:to-[hsl(330_70%_40%)] transition-all shadow-lg"
+                  >
+                    <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
+                      <BookOpen className="w-4 h-4" />
+                    </div>
+                    <div className="text-left">
+                      <p className="font-medium text-sm">Nhật Ký Tâm Linh</p>
+                      <p className="text-[10px] opacity-80">Ghi chép hành trình</p>
                     </div>
                   </motion.button>
                 </div>
