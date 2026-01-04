@@ -139,7 +139,7 @@ const JournalEditor = ({ isOpen, onClose, onSave, editingEntry }: JournalEditorP
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="fixed inset-4 sm:inset-6 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-lg bg-gradient-to-b from-[hsl(45_50%_99%)] to-[hsl(45_40%_97%)] rounded-2xl shadow-2xl z-50 flex flex-col max-h-[calc(100vh-2rem)] sm:max-h-[calc(100vh-3rem)] md:max-h-[85vh] overflow-hidden"
+            className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] md:w-[90%] lg:w-[80%] max-w-4xl bg-gradient-to-b from-[hsl(45_50%_99%)] to-[hsl(45_40%_97%)] rounded-2xl shadow-2xl z-50 flex flex-col max-h-[calc(100vh-2rem)] sm:max-h-[calc(100vh-3rem)] overflow-hidden"
           >
             {/* Decorative Header */}
             <div className="relative bg-gradient-to-r from-[hsl(43_85%_55%)] via-[hsl(38_90%_60%)] to-[hsl(43_85%_55%)] p-5 pb-6">
