@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import ShareModal from "@/components/ShareModal";
 
 interface DivineLightCreatorProps {
   onPointsEarned?: (points: number) => void;
@@ -69,6 +70,7 @@ const DivineLightCreator = ({ onPointsEarned }: DivineLightCreatorProps) => {
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
   const [showReward, setShowReward] = useState(false);
+  const [showShareModal, setShowShareModal] = useState(false);
   const { toast } = useToast();
 
   // Rotate placeholder examples
@@ -169,10 +171,7 @@ const DivineLightCreator = ({ onPointsEarned }: DivineLightCreatorProps) => {
   };
 
   const shareImage = () => {
-    toast({
-      title: "Chia sẻ trong FUN Ecosystem",
-      description: "Tính năng đang được phát triển. Sắp ra mắt!",
-    });
+    setShowShareModal(true);
   };
 
   const resetCreator = () => {
@@ -453,6 +452,22 @@ const DivineLightCreator = ({ onPointsEarned }: DivineLightCreatorProps) => {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Share Modal */}
+      {generatedImage && (
+        <ShareModal
+          isOpen={showShareModal}
+          onClose={() => setShowShareModal(false)}
+          mediaUrl={generatedImage}
+          mediaType="image"
+          onSuccess={() => {
+            toast({
+              title: "✨ Đã chia sẻ!",
+              description: "Ánh Sáng của con đã được thêm vào Thư Viện.",
+            });
+          }}
+        />
+      )}
     </motion.div>
   );
 };

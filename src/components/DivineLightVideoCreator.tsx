@@ -4,6 +4,7 @@ import { Sparkles, Download, Share2, Loader2, Video, X, Volume2, VolumeX, Play }
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import ShareModal from "@/components/ShareModal";
 
 interface DivineLightVideoCreatorProps {
   onPointsEarned?: (points: number) => void;
@@ -90,6 +91,7 @@ const DivineLightVideoCreator = ({ onPointsEarned }: DivineLightVideoCreatorProp
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
   const [showReward, setShowReward] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
+  const [showShareModal, setShowShareModal] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const { toast } = useToast();
 
@@ -190,10 +192,7 @@ const DivineLightVideoCreator = ({ onPointsEarned }: DivineLightVideoCreatorProp
   };
 
   const shareVideo = () => {
-    toast({
-      title: "Chia sẻ trong FUN Ecosystem",
-      description: "Tính năng đang được phát triển. Sắp ra mắt!",
-    });
+    setShowShareModal(true);
   };
 
   const resetCreator = () => {
@@ -540,6 +539,22 @@ const DivineLightVideoCreator = ({ onPointsEarned }: DivineLightVideoCreatorProp
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Share Modal */}
+      {generatedVideo && (
+        <ShareModal
+          isOpen={showShareModal}
+          onClose={() => setShowShareModal(false)}
+          mediaUrl={generatedVideo}
+          mediaType={videoType === "video" ? "video" : "image"}
+          onSuccess={() => {
+            toast({
+              title: "✨ Đã chia sẻ!",
+              description: "Video Ánh Sáng của con đã được thêm vào Thư Viện.",
+            });
+          }}
+        />
+      )}
     </motion.div>
   );
 };
