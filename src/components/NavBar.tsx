@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Sparkles, User, LogIn, BookHeart, Home, Target, Globe, Music, MessageCircle, type LucideIcon } from "lucide-react";
+import { Menu, X, Sparkles, User, LogIn, BookHeart, Home, Target, Globe, Music, MessageCircle, Trophy, Image, type LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 interface NavItem {
   label: string;
@@ -21,8 +22,9 @@ const NavBar = () => {
     { label: "Hệ sinh thái", href: "#ecosystem", icon: Globe },
     { label: "Thần chú", href: "#mantras", icon: Music },
     { label: "Chat với Angel AI", href: "/chat", icon: MessageCircle, isRoute: true },
-    { label: "Nhật Ký Tâm Linh", href: "/journal", icon: BookHeart, isRoute: true },
-    { label: "Hồ Sơ", href: "/profile", icon: User, isRoute: true },
+    { label: "Nhật Ký", href: "/journal", icon: BookHeart, isRoute: true },
+    { label: "Thư Viện", href: "/gallery", icon: Image, isRoute: true },
+    { label: "Xếp Hạng", href: "/leaderboard", icon: Trophy, isRoute: true },
   ];
 
   const scrollToSection = (href: string) => {
@@ -156,6 +158,9 @@ const NavBar = () => {
                 </button>
               );
             })}
+            
+            {/* Language Switcher */}
+            <LanguageSwitcher />
             
             {/* Login Button - Enhanced glow */}
             <motion.div

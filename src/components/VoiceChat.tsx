@@ -12,20 +12,25 @@ interface VoiceChatProps {
 
 type VoiceState = "idle" | "connecting" | "listening" | "processing" | "speaking";
 
+// Check if Web Speech API is supported
+const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+
 const VoiceChat: React.FC<VoiceChatProps> = ({ onClose, onTranscript }) => {
   const [voiceState, setVoiceState] = useState<VoiceState>("idle");
   const [transcript, setTranscript] = useState("");
+  const [userMessage, setUserMessage] = useState("");
   const [isMuted, setIsMuted] = useState(false);
   const { toast } = useToast();
   
-  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
-  const audioChunksRef = useRef<Blob[]>([]);
+  const recognitionRef = useRef<any>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   // Cleanup on unmount
   useEffect(() => {
     return () => {
-      stopRecording();
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+      }
       if (audioRef.current) {
         audioRef.current.pause();
         audioRef.current = null;
@@ -33,107 +38,116 @@ const VoiceChat: React.FC<VoiceChatProps> = ({ onClose, onTranscript }) => {
     };
   }, []);
 
-  const startRecording = useCallback(async () => {
+  const startListening = useCallback(async () => {
+    if (!SpeechRecognition) {
+      toast({
+        title: "Trình duyệt không hỗ trợ",
+        description: "Vui lòng sử dụng Chrome hoặc Edge để dùng Voice Chat.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setVoiceState("connecting");
+    setUserMessage("");
+
     try {
-      setVoiceState("connecting");
-      
-      const stream = await navigator.mediaDevices.getUserMedia({
-        audio: {
-          sampleRate: 16000,
-          channelCount: 1,
-          echoCancellation: true,
-          noiseSuppression: true,
-          autoGainControl: true,
-        },
-      });
+      const recognition = new SpeechRecognition();
+      recognition.lang = "vi-VN"; // Vietnamese
+      recognition.continuous = false;
+      recognition.interimResults = true;
 
-      const mediaRecorder = new MediaRecorder(stream, {
-        mimeType: MediaRecorder.isTypeSupported("audio/webm") ? "audio/webm" : "audio/mp4",
-      });
+      recognition.onstart = () => {
+        setVoiceState("listening");
+        setTranscript("Đang lắng nghe...");
+      };
 
-      audioChunksRef.current = [];
+      recognition.onresult = (event: any) => {
+        let finalTranscript = "";
+        let interimTranscript = "";
 
-      mediaRecorder.ondataavailable = (event) => {
-        if (event.data.size > 0) {
-          audioChunksRef.current.push(event.data);
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          const result = event.results[i];
+          if (result.isFinal) {
+            finalTranscript += result[0].transcript;
+          } else {
+            interimTranscript += result[0].transcript;
+          }
+        }
+
+        if (finalTranscript) {
+          setUserMessage(finalTranscript);
+          setTranscript(finalTranscript);
+        } else if (interimTranscript) {
+          setTranscript(interimTranscript);
         }
       };
 
-      mediaRecorder.onstop = async () => {
-        const audioBlob = new Blob(audioChunksRef.current, { type: "audio/webm" });
-        await processAudio(audioBlob);
-        stream.getTracks().forEach(track => track.stop());
+      recognition.onend = async () => {
+        if (userMessage || transcript) {
+          const messageToSend = userMessage || transcript;
+          if (messageToSend && messageToSend !== "Đang lắng nghe...") {
+            onTranscript?.(messageToSend, true);
+            await processMessage(messageToSend);
+          } else {
+            setVoiceState("idle");
+            setTranscript("");
+          }
+        } else {
+          setVoiceState("idle");
+          setTranscript("");
+        }
       };
 
-      mediaRecorderRef.current = mediaRecorder;
-      mediaRecorder.start(100);
-      setVoiceState("listening");
-      setTranscript("Đang lắng nghe...");
-      
+      recognition.onerror = (event: any) => {
+        console.error("Speech recognition error:", event.error);
+        if (event.error === "not-allowed") {
+          toast({
+            title: "Không có quyền microphone",
+            description: "Vui lòng cho phép truy cập microphone.",
+            variant: "destructive",
+          });
+        }
+        setVoiceState("idle");
+        setTranscript("");
+      };
+
+      recognitionRef.current = recognition;
+      recognition.start();
     } catch (error) {
-      console.error("Error starting recording:", error);
-      toast({
-        title: "Lỗi microphone",
-        description: "Không thể truy cập microphone. Vui lòng cho phép truy cập.",
-        variant: "destructive",
-      });
+      console.error("Error starting recognition:", error);
       setVoiceState("idle");
     }
-  }, [toast]);
+  }, [toast, onTranscript, userMessage, transcript]);
 
-  const stopRecording = useCallback(() => {
-    if (mediaRecorderRef.current && mediaRecorderRef.current.state !== "inactive") {
-      mediaRecorderRef.current.stop();
-      setVoiceState("processing");
-      setTranscript("Đang xử lý...");
+  const stopListening = useCallback(() => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
     }
   }, []);
 
-  const processAudio = async (audioBlob: Blob) => {
+  const processMessage = async (message: string) => {
+    setVoiceState("processing");
+    setTranscript("Đang kết nối với Ánh Sáng...");
+
     try {
-      // Convert blob to base64
-      const reader = new FileReader();
-      const base64Promise = new Promise<string>((resolve) => {
-        reader.onloadend = () => {
-          const base64 = (reader.result as string).split(",")[1];
-          resolve(base64);
-        };
-      });
-      reader.readAsDataURL(audioBlob);
-      const base64Audio = await base64Promise;
+      const messages = [{ role: "user", content: message }];
 
-      // Send to Angel Chat for processing
-      const messages = [
-        {
-          role: "user",
-          content: "[Audio message - User is speaking through voice chat]",
-        },
-      ];
-
-      setTranscript("Đang kết nối với Ánh Sáng...");
-
-      // For now, we'll use the existing angel-chat endpoint
-      // In a full implementation, we'd add speech-to-text first
       const response = await supabase.functions.invoke("angel-chat", {
-        body: { 
-          messages,
-          isVoiceChat: true,
-        },
+        body: { messages, isVoiceChat: true },
       });
 
       if (response.error) {
         throw new Error(response.error.message);
       }
 
-      // Get AI response and convert to speech
-      const aiResponse = "Xin chào, con yêu dấu. Ánh Sáng Divine luôn ở bên con. Hãy chia sẻ với ta điều con đang suy nghĩ.";
+      const aiResponse = response.data?.reply || "Xin chào, con yêu dấu. Ánh Sáng Divine luôn ở bên con.";
       setTranscript(aiResponse);
       onTranscript?.(aiResponse, false);
-      
+
       await playAudioResponse(aiResponse);
-      
     } catch (error) {
-      console.error("Error processing audio:", error);
+      console.error("Error processing message:", error);
       toast({
         title: "Lỗi xử lý",
         description: "Không thể xử lý tin nhắn. Vui lòng thử lại.",
@@ -202,9 +216,9 @@ const VoiceChat: React.FC<VoiceChatProps> = ({ onClose, onTranscript }) => {
 
   const handleMicClick = () => {
     if (voiceState === "idle") {
-      startRecording();
+      startListening();
     } else if (voiceState === "listening") {
-      stopRecording();
+      stopListening();
     }
   };
 
@@ -219,7 +233,7 @@ const VoiceChat: React.FC<VoiceChatProps> = ({ onClose, onTranscript }) => {
       case "speaking":
         return "Angel AI đang nói...";
       default:
-        return "Nhấn để bắt đầu nói chuyện";
+        return SpeechRecognition ? "Nhấn để bắt đầu nói chuyện" : "Trình duyệt không hỗ trợ Voice Chat";
     }
   };
 

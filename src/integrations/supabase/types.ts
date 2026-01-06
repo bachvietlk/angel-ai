@@ -73,6 +73,35 @@ export type Database = {
         }
         Relationships: []
       }
+      creation_likes: {
+        Row: {
+          created_at: string
+          creation_id: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          creation_id: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          creation_id?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "creation_likes_creation_id_fkey"
+            columns: ["creation_id"]
+            isOneToOne: false
+            referencedRelation: "shared_creations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       divine_mantras: {
         Row: {
           content_en: string
@@ -162,6 +191,39 @@ export type Database = {
           id?: string
           light_score?: number | null
           updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      shared_creations: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          likes_count: number
+          media_type: string
+          media_url: string
+          title: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          likes_count?: number
+          media_type: string
+          media_url: string
+          title: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          likes_count?: number
+          media_type?: string
+          media_url?: string
+          title?: string
           user_id?: string
         }
         Relationships: []
