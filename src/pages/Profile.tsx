@@ -20,6 +20,7 @@ import { DailyChallenge } from "@/components/DailyChallenge";
 import { AvatarUpload } from "@/components/AvatarUpload";
 import { ChangePasswordDialog } from "@/components/ChangePasswordDialog";
 import { DeleteAccountDialog } from "@/components/DeleteAccountDialog";
+import { WalletConnect } from "@/components/WalletConnect";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
@@ -38,6 +39,7 @@ import {
   Globe,
   Shield,
   AlertTriangle,
+  Wallet,
 } from "lucide-react";
 
 const Profile = () => {
@@ -425,6 +427,21 @@ const Profile = () => {
                           </>
                         )}
                       </Button>
+                    </div>
+                  </div>
+
+                  {/* Web3 Wallet Section */}
+                  <div className="glass-gold rounded-3xl p-8">
+                    <div className="flex items-center gap-2 mb-6">
+                      <Wallet className="w-5 h-5 text-gold" />
+                      <h3 className="font-display text-lg text-gold-dark">FUN Wallet</h3>
+                    </div>
+
+                    <div className="max-w-md space-y-4">
+                      <p className="text-sm text-muted-foreground">
+                        Kết nối ví Web3 để tham gia FUN Ecosystem và nhận thưởng Camly Coin trong tương lai
+                      </p>
+                      <WalletConnect userId={user?.id} />
                     </div>
                   </div>
 
