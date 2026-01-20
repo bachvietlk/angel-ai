@@ -14,6 +14,7 @@ import Journal from "./pages/Journal";
 import Leaderboard from "./pages/Leaderboard";
 import Gallery from "./pages/Gallery";
 import UserProfile from "./pages/UserProfile";
+import PlatformDocs from "./pages/PlatformDocs";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -36,6 +37,7 @@ const App = () => (
               <Route path="/leaderboard" element={<Leaderboard />} />
               <Route path="/gallery" element={<Gallery />} />
               <Route path="/user/:userId" element={<UserProfile />} />
+              <Route path="/docs/platform" element={<PlatformDocs />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
