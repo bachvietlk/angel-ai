@@ -1,20 +1,48 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import { Check, Copy, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import angelHero from "@/assets/angel-hero.png";
+import SuggestedQuestions from "./SuggestedQuestions";
 
 interface ChatMessageProps {
   role: "user" | "assistant";
   content: string;
   isStreaming?: boolean;
+  isLastAssistantMessage?: boolean;
+  onSuggestionClick?: (question: string) => void;
 }
 
-const ChatMessage = ({ role, content, isStreaming }: ChatMessageProps) => {
+// Parse suggestions from AI response
+const parseSuggestions = (content: string): { cleanContent: string; suggestions: string[] } => {
+  const regex = /\[SUGGESTIONS\]([\s\S]*?)\[\/SUGGESTIONS\]/;
+  const match = content.match(regex);
+  
+  if (!match) return { cleanContent: content, suggestions: [] };
+  
+  const cleanContent = content.replace(regex, "").trim();
+  const suggestionsText = match[1];
+  const suggestions = suggestionsText
+    .split("\n")
+    .map(line => line.replace(/^\d+\.\s*/, "").trim())
+    .filter(line => line.length > 0 && line !== "");
+  
+  return { cleanContent, suggestions: suggestions.slice(0, 3) };
+};
+
+const ChatMessage = ({ role, content, isStreaming, isLastAssistantMessage, onSuggestionClick }: ChatMessageProps) => {
   const [copied, setCopied] = useState(false);
   const { toast } = useToast();
+
+  // Parse suggestions from content
+  const { cleanContent, suggestions } = useMemo(() => {
+    if (role === "assistant" && !isStreaming) {
+      return parseSuggestions(content);
+    }
+    return { cleanContent: content, suggestions: [] };
+  }, [content, role, isStreaming]);
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(content);
@@ -128,7 +156,7 @@ const ChatMessage = ({ role, content, isStreaming }: ChatMessageProps) => {
                   },
                 }}
               >
-                {content}
+                {cleanContent}
               </ReactMarkdown>
             </div>
             
@@ -142,8 +170,16 @@ const ChatMessage = ({ role, content, isStreaming }: ChatMessageProps) => {
             )}
           </div>
           
+          {/* Suggested Questions - only for last assistant message */}
+          {isLastAssistantMessage && !isStreaming && suggestions.length > 0 && onSuggestionClick && (
+            <SuggestedQuestions 
+              suggestions={suggestions} 
+              onSuggestionClick={onSuggestionClick} 
+            />
+          )}
+          
           {/* Action buttons - show on hover */}
-          {!isStreaming && content && (
+          {!isStreaming && cleanContent && (
             <div className="flex items-center gap-1 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
               <Button
                 variant="ghost"

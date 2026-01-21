@@ -779,14 +779,22 @@ const Chat = () => {
             )}
 
             {/* Messages with ChatMessage component */}
-            {messages.map((message, index) => (
-              <ChatMessage
-                key={index}
-                role={message.role}
-                content={message.content}
-                isStreaming={isLoading && index === messages.length - 1 && message.role === "assistant"}
-              />
-            ))}
+            {messages.map((message, index) => {
+              const isLastAssistantMessage = 
+                message.role === "assistant" && 
+                index === messages.length - 1;
+              
+              return (
+                <ChatMessage
+                  key={index}
+                  role={message.role}
+                  content={message.content}
+                  isStreaming={isLoading && index === messages.length - 1 && message.role === "assistant"}
+                  isLastAssistantMessage={isLastAssistantMessage}
+                  onSuggestionClick={(question) => streamChat(question)}
+                />
+              );
+            })}
 
             {/* Typing indicator - Larger */}
             {isLoading && messages[messages.length - 1]?.role !== "assistant" && (
