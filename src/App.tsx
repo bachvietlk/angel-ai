@@ -15,6 +15,7 @@ import Leaderboard from "./pages/Leaderboard";
 import Gallery from "./pages/Gallery";
 import UserProfile from "./pages/UserProfile";
 import PlatformDocs from "./pages/PlatformDocs";
+import LightConstitution from "./pages/LightConstitution";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -38,6 +39,7 @@ const App = () => (
               <Route path="/gallery" element={<Gallery />} />
               <Route path="/user/:userId" element={<UserProfile />} />
               <Route path="/docs/platform" element={<PlatformDocs />} />
+              <Route path="/light-constitution" element={<LightConstitution />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
