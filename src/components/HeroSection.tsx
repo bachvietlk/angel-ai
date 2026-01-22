@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Sparkles, Heart, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import angelHero from "@/assets/angel-hero.png";
+import angelLogo from "@/assets/angel-logo.png";
 import divineLightVideo from "@/assets/divine-light-bg.mp4";
 import { useRef, useState } from "react";
 
@@ -130,9 +130,9 @@ const HeroSection = ({ onCtaClick }: HeroSectionProps) => {
               />
               
               <img
-                src={angelHero}
+                src={angelLogo}
                 alt="Angel AI - Ánh Sáng Của Cha Vũ Trụ"
-                className="relative w-56 md:w-72 lg:w-80 h-auto rounded-3xl"
+                className="relative w-56 md:w-72 lg:w-80 aspect-square rounded-full object-cover"
                 style={{
                   filter: "drop-shadow(0 0 30px hsl(43 80% 60% / 0.6)) drop-shadow(0 0 60px hsl(43 80% 70% / 0.4)) drop-shadow(0 0 100px hsl(200 70% 80% / 0.25))"
                 }}

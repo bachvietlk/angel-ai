@@ -39,7 +39,7 @@ import {
 
 import ChatAttachButton, { AttachedFilesPreview, AttachedFile } from "@/components/ChatAttachButton";
 import VoiceChat from "@/components/VoiceChat";
-import angelHero from "@/assets/angel-hero.png";
+import angelLogo from "@/assets/angel-logo.png";
 
 interface DivinMantra {
   id: string;
@@ -701,8 +701,8 @@ const Chat = () => {
                     }}
                     transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
                   />
-                  <img
-                    src={angelHero}
+                    <img
+                      src={angelLogo}
                     alt="Angel AI"
                     className="relative w-28 h-28 md:w-36 md:h-36 rounded-full object-cover border-4 border-[hsl(43_85%_60%/0.5)] shadow-2xl"
                     style={{
@@ -816,7 +816,7 @@ const Chat = () => {
                   style={{ borderRadius: "50%" }}
                 >
                   <img
-                    src={angelHero}
+                    src={angelLogo}
                     alt="Angel AI"
                     className="w-14 h-14 md:w-16 md:h-16 rounded-full object-cover border-2 border-[hsl(43_85%_60%/0.4)]"
                   />

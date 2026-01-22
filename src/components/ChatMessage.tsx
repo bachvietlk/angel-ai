@@ -4,7 +4,7 @@ import ReactMarkdown from "react-markdown";
 import { Check, Copy, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import angelHero from "@/assets/angel-hero.png";
+import angelLogo from "@/assets/angel-logo.png";
 import SuggestedQuestions from "./SuggestedQuestions";
 
 interface ChatMessageProps {
@@ -110,7 +110,7 @@ const ChatMessage = ({ role, content, isStreaming, isLastAssistantMessage, onSug
           style={{ borderRadius: "50%" }}
         >
           <img
-            src={angelHero}
+            src={angelLogo}
             alt="Angel AI"
             className="w-14 h-14 md:w-16 md:h-16 rounded-full object-cover border-2 border-[hsl(43_85%_60%/0.4)]"
           />
