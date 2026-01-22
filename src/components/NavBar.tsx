@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Sparkles, User, LogIn, BookHeart, Home, Target, Globe, Music, MessageCircle, Trophy, Image, type LucideIcon } from "lucide-react";
+import { Menu, X, LogIn, BookHeart, Home, Target, Globe, Music, MessageCircle, Trophy, Image, type LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import angelLogo from "@/assets/angel-logo.png";
 
 interface NavItem {
   label: string;
@@ -50,7 +51,7 @@ const NavBar = () => {
       
       <div className="container mx-auto px-6 relative">
         <div className="flex items-center justify-between h-18 md:h-22">
-          {/* Enhanced Logo - More prominent */}
+          {/* Brand Logo (icon-only) */}
           <motion.a
             href="#hero"
             onClick={(e) => {
@@ -61,48 +62,46 @@ const NavBar = () => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.98 }}
           >
-            {/* Circular glowing logo - Enhanced with angel wing icon */}
             <div className="relative">
               {/* Outer glow pulse */}
-              <motion.div 
-                className="absolute -inset-2 rounded-full bg-gradient-to-r from-gold/40 to-gold-light/40 blur-xl"
-                animate={{ 
-                  scale: [1, 1.3, 1],
-                  opacity: [0.4, 0.7, 0.4]
-                }}
+              <motion.div
+                className="absolute -inset-2 rounded-full bg-gradient-to-r from-gold/35 to-sky-light/25 blur-xl"
+                animate={{ scale: [1, 1.25, 1], opacity: [0.35, 0.65, 0.35] }}
                 transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
               />
-              
-              {/* Main logo circle */}
-              <div className="relative w-12 h-12 rounded-full bg-gradient-to-br from-gold-light via-gold to-gold-glow flex items-center justify-center"
+
+              {/* Light backing to make the logo feel "transparent/light" */}
+              <div
+                className="relative w-12 h-12 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center"
                 style={{
-                  boxShadow: "0 0 20px hsl(43 80% 55% / 0.6), 0 0 40px hsl(43 80% 60% / 0.3)"
+                  boxShadow:
+                    "0 0 18px hsl(43 80% 55% / 0.35), 0 0 34px hsl(200 70% 80% / 0.18)",
                 }}
               >
-                {/* Angel wing icon */}
-                <svg className="w-6 h-6 text-background" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 2C8.5 2 6 4.5 5 8c-1 3.5 0 7 2 9.5 1.5 2 3.5 3 5 3.5.5-1 .5-2.5 0-4-.5-2-2-3.5-2-5.5 0-1.5 1-3 2-3s2 1.5 2 3c0 2-1.5 3.5-2 5.5-.5 1.5-.5 3 0 4 1.5-.5 3.5-1.5 5-3.5 2-2.5 3-6 2-9.5-1-3.5-3.5-6-7-6z"/>
-                </svg>
+                <img
+                  src={angelLogo}
+                  alt="Angel AI"
+                  className="w-11 h-11 rounded-full object-cover"
+                  style={{
+                    filter:
+                      "drop-shadow(0 0 10px hsl(43 85% 55% / 0.35)) drop-shadow(0 0 18px hsl(200 70% 80% / 0.2))",
+                  }}
+                  loading="eager"
+                />
               </div>
-              
+
               {/* Halo rings */}
               <motion.div
-                className="absolute -inset-1.5 rounded-full border-2 border-gold/40"
-                animate={{ 
-                  scale: [1, 1.2, 1],
-                  opacity: [0.4, 0.7, 0.4]
-                }}
+                className="absolute -inset-1.5 rounded-full border-2 border-gold/35"
+                animate={{ scale: [1, 1.18, 1], opacity: [0.35, 0.65, 0.35] }}
                 transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
               />
               <motion.div
                 className="absolute -inset-3 rounded-full border border-gold/20"
-                animate={{ 
-                  scale: [1, 1.15, 1],
-                  opacity: [0.2, 0.4, 0.2]
-                }}
+                animate={{ scale: [1, 1.14, 1], opacity: [0.18, 0.38, 0.18] }}
                 transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
               />
-              
+
               {/* Sparkle particles */}
               {[0, 1, 2].map((i) => (
                 <motion.div
@@ -111,34 +110,12 @@ const NavBar = () => {
                   style={{
                     top: i === 0 ? "-4px" : i === 1 ? "50%" : "calc(100% + 2px)",
                     left: i === 0 ? "50%" : i === 1 ? "calc(100% + 4px)" : "50%",
-                    transform: "translate(-50%, -50%)"
+                    transform: "translate(-50%, -50%)",
                   }}
-                  animate={{
-                    scale: [0, 1.5, 0],
-                    opacity: [0, 1, 0]
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    delay: i * 0.6
-                  }}
+                  animate={{ scale: [0, 1.5, 0], opacity: [0, 1, 0] }}
+                  transition={{ duration: 2, repeat: Infinity, delay: i * 0.6 }}
                 />
               ))}
-            </div>
-            
-            {/* Logo text - Enhanced */}
-            <div className="flex flex-col">
-              <span 
-                className="font-display text-xl md:text-2xl font-bold text-gradient-gold"
-                style={{
-                  textShadow: "0 0 20px hsl(43 80% 55% / 0.4)"
-                }}
-              >
-                ANGEL AI
-              </span>
-              <span className="text-[10px] text-gold-dark/70 tracking-[0.15em] font-elegant -mt-0.5 hidden md:block">
-                ÁNH SÁNG CỦA CHA VŨ TRỤ
-              </span>
             </div>
           </motion.a>
 
