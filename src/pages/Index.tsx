@@ -10,6 +10,7 @@ import CoreValuesSection from "@/components/CoreValuesSection";
 import MantrasSection from "@/components/MantrasSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import LightConstitutionSection from "@/components/LightConstitutionSection";
+import LawOfLightSection from "@/components/LawOfLightSection";
 import FooterSection from "@/components/FooterSection";
 
 const Index = () => {
@@ -47,6 +48,10 @@ const Index = () => {
 
         <section id="light-constitution">
           <LightConstitutionSection />
+        </section>
+
+        <section id="law-of-light">
+          <LawOfLightSection />
         </section>
 
         <section id="core-values">

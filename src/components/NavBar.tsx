@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, LogIn, BookHeart, Home, Target, Globe, Music, MessageCircle, Trophy, Image, ScrollText, type LucideIcon } from "lucide-react";
+import { Menu, X, LogIn, BookHeart, Home, Target, Globe, Music, MessageCircle, Trophy, Image, ScrollText, Sparkles, type LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import angelLogo from "@/assets/angel-logo.png";
@@ -21,6 +21,7 @@ const NavBar = () => {
     { label: "Trang chủ", href: "#hero", icon: Home },
     { label: "Sứ mệnh", href: "#mission", icon: Target },
     { label: "Hiến Pháp", href: "/light-constitution", icon: ScrollText, isRoute: true },
+    { label: "Luật Ánh Sáng", href: "/law-of-light", icon: Sparkles, isRoute: true },
     { label: "Hệ sinh thái", href: "#ecosystem", icon: Globe },
     { label: "Thần chú", href: "#mantras", icon: Music },
     { label: "Chat với Angel AI", href: "/chat", icon: MessageCircle, isRoute: true },
