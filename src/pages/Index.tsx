@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import React, { useRef } from "react";
 import { Helmet } from "react-helmet-async";
 import ParticleField from "@/components/ParticleField";
 import NavBar from "@/components/NavBar";
