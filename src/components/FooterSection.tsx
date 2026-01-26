@@ -1,9 +1,8 @@
-import { forwardRef } from "react";
 import { motion } from "framer-motion";
-import { Sparkles, Heart, ExternalLink } from "lucide-react";
+import { Sparkles, Heart } from "lucide-react";
 import { Link } from "react-router-dom";
 
-const FooterSection = forwardRef<HTMLElement>((props, ref) => {
+const FooterSection = () => {
   const currentYear = new Date().getFullYear();
 
   const footerLinks = [
@@ -21,7 +20,7 @@ const FooterSection = forwardRef<HTMLElement>((props, ref) => {
   };
 
   return (
-    <footer ref={ref} className="relative py-24 overflow-hidden bg-background">
+    <footer className="relative py-24 overflow-hidden bg-background">
       {/* Soft radiant background */}
       <div className="absolute inset-0 bg-gradient-to-t from-gold/[0.12] via-gold/[0.05] to-transparent" />
       
@@ -160,8 +159,6 @@ const FooterSection = forwardRef<HTMLElement>((props, ref) => {
       </div>
     </footer>
   );
-});
-
-FooterSection.displayName = "FooterSection";
+};
 
 export default FooterSection;
