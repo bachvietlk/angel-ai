@@ -10,6 +10,7 @@ import { useJournal, JournalEntry, NewJournalEntry } from "@/hooks/useJournal";
 import { useLawOfLightStatus } from "@/hooks/useLawOfLightStatus";
 import JournalEntryCard from "@/components/JournalEntryCard";
 import JournalEditor from "@/components/JournalEditor";
+import LawOfLightModal from "@/components/LawOfLightModal";
 import {
   BookOpen,
   Plus,
@@ -30,7 +31,8 @@ const Journal = () => {
   const navigate = useNavigate();
   
   const { entries, isLoading, createEntry, updateEntry, deleteEntry } = useJournal(user);
-  const { isAccepted: lawAccepted, loading: lawLoading } = useLawOfLightStatus(user?.id);
+  const { isAccepted: lawAccepted, loading: lawLoading, acceptLawOfLight } = useLawOfLightStatus(user?.id);
+  const [showLawModal, setShowLawModal] = useState(false);
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
@@ -52,12 +54,14 @@ const Journal = () => {
     return () => subscription.unsubscribe();
   }, [navigate]);
 
-  // Redirect to Law of Light if not accepted
+  // Show modal if Law of Light not accepted
   useEffect(() => {
     if (!lawLoading && lawAccepted === false && user) {
-      navigate("/law-of-light");
+      setShowLawModal(true);
+    } else {
+      setShowLawModal(false);
     }
-  }, [lawLoading, lawAccepted, user, navigate]);
+  }, [lawLoading, lawAccepted, user]);
 
   const filteredEntries = entries.filter((entry) => {
     const query = searchQuery.toLowerCase();
@@ -286,6 +290,16 @@ const Journal = () => {
         }}
         onSave={handleSaveEntry}
         editingEntry={editingEntry}
+      />
+
+      {/* Law of Light Modal */}
+      <LawOfLightModal
+        isOpen={showLawModal}
+        onAccept={async () => {
+          await acceptLawOfLight();
+          setShowLawModal(false);
+        }}
+        onViewDetails={() => navigate("/law-of-light")}
       />
     </>
   );

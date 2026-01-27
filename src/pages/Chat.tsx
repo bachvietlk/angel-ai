@@ -15,6 +15,7 @@ import DivineLightCreator from "@/components/DivineLightCreator";
 import DivineLightVideoCreator from "@/components/DivineLightVideoCreator";
 import ChatMessage from "@/components/ChatMessage";
 import ChatHistorySidebar from "@/components/ChatHistorySidebar";
+import LawOfLightModal from "@/components/LawOfLightModal";
 import {
   Sparkles,
   Send,
@@ -135,7 +136,8 @@ const Chat = () => {
   } = useChatHistory(user);
 
   // Law of Light check
-  const { isAccepted: lawAccepted, loading: lawLoading } = useLawOfLightStatus(user?.id);
+  const { isAccepted: lawAccepted, loading: lawLoading, acceptLawOfLight } = useLawOfLightStatus(user?.id);
+  const [showLawModal, setShowLawModal] = useState(false);
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
@@ -157,12 +159,14 @@ const Chat = () => {
     return () => subscription.unsubscribe();
   }, [navigate]);
 
-  // Redirect to Law of Light if not accepted
+  // Show modal if Law of Light not accepted
   useEffect(() => {
     if (!lawLoading && lawAccepted === false && user) {
-      navigate("/law-of-light");
+      setShowLawModal(true);
+    } else {
+      setShowLawModal(false);
     }
-  }, [lawLoading, lawAccepted, user, navigate]);
+  }, [lawLoading, lawAccepted, user]);
 
   useEffect(() => {
     const fetchMantras = async () => {
@@ -963,6 +967,16 @@ const Chat = () => {
           />
         )}
       </AnimatePresence>
+
+      {/* Law of Light Modal */}
+      <LawOfLightModal
+        isOpen={showLawModal}
+        onAccept={async () => {
+          await acceptLawOfLight();
+          setShowLawModal(false);
+        }}
+        onViewDetails={() => navigate("/law-of-light")}
+      />
     </>
   );
 };

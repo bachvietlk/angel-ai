@@ -6,7 +6,9 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { User } from "@supabase/supabase-js";
+import { useLawOfLightStatus } from "@/hooks/useLawOfLightStatus";
 import GalleryCard from "@/components/GalleryCard";
+import LawOfLightModal from "@/components/LawOfLightModal";
 
 type FilterType = "all" | "image" | "video";
 type SortType = "newest" | "popular";
@@ -35,6 +37,10 @@ const GalleryPage = () => {
   const [filter, setFilter] = useState<FilterType>("all");
   const [sort, setSort] = useState<SortType>("newest");
   const [tab, setTab] = useState<TabType>("all");
+  
+  // Law of Light check
+  const { isAccepted: lawAccepted, loading: lawLoading, acceptLawOfLight } = useLawOfLightStatus(user?.id);
+  const [showLawModal, setShowLawModal] = useState(false);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -50,6 +56,15 @@ const GalleryPage = () => {
 
     return () => subscription.unsubscribe();
   }, []);
+
+  // Show modal if Law of Light not accepted
+  useEffect(() => {
+    if (!lawLoading && lawAccepted === false && user) {
+      setShowLawModal(true);
+    } else {
+      setShowLawModal(false);
+    }
+  }, [lawLoading, lawAccepted, user]);
 
   const fetchGallery = useCallback(async () => {
     setLoading(true);
@@ -286,6 +301,16 @@ const GalleryPage = () => {
           </motion.div>
         )}
       </main>
+
+      {/* Law of Light Modal */}
+      <LawOfLightModal
+        isOpen={showLawModal}
+        onAccept={async () => {
+          await acceptLawOfLight();
+          setShowLawModal(false);
+        }}
+        onViewDetails={() => navigate("/law-of-light")}
+      />
     </div>
   );
 };
