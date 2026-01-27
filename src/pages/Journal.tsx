@@ -7,6 +7,7 @@ import { User, Session } from "@supabase/supabase-js";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useJournal, JournalEntry, NewJournalEntry } from "@/hooks/useJournal";
+import { useLawOfLightStatus } from "@/hooks/useLawOfLightStatus";
 import JournalEntryCard from "@/components/JournalEntryCard";
 import JournalEditor from "@/components/JournalEditor";
 import {
@@ -29,6 +30,7 @@ const Journal = () => {
   const navigate = useNavigate();
   
   const { entries, isLoading, createEntry, updateEntry, deleteEntry } = useJournal(user);
+  const { isAccepted: lawAccepted, loading: lawLoading } = useLawOfLightStatus(user?.id);
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
@@ -49,6 +51,13 @@ const Journal = () => {
 
     return () => subscription.unsubscribe();
   }, [navigate]);
+
+  // Redirect to Law of Light if not accepted
+  useEffect(() => {
+    if (!lawLoading && lawAccepted === false && user) {
+      navigate("/law-of-light");
+    }
+  }, [lawLoading, lawAccepted, user, navigate]);
 
   const filteredEntries = entries.filter((entry) => {
     const query = searchQuery.toLowerCase();
@@ -92,7 +101,7 @@ const Journal = () => {
   }).length;
   const gratitudeCount = entries.reduce((acc, e) => acc + (e.gratitude?.length || 0), 0);
 
-  if (!user) {
+  if (!user || lawLoading) {
     return (
       <div className="min-h-screen bg-[hsl(45_30%_98%)] flex items-center justify-center">
         <motion.div

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
@@ -8,10 +8,24 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent } from "@/components/ui/card";
 import NavBar from "@/components/NavBar";
 import ParticleField from "@/components/ParticleField";
+import { useAuth } from "@/hooks/useAuth";
+import { useLawOfLightStatus } from "@/hooks/useLawOfLightStatus";
+import { useToast } from "@/hooks/use-toast";
 
 const LawOfLight = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const { toast } = useToast();
+  const { isAccepted, loading: lawLoading, acceptLawOfLight } = useLawOfLightStatus(user?.id);
   const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // If already accepted, redirect to chat
+  useEffect(() => {
+    if (!lawLoading && isAccepted === true) {
+      navigate("/chat");
+    }
+  }, [lawLoading, isAccepted, navigate]);
 
   const checklistItems = [
     { id: "honest", label: "Con sống chân thật với chính mình" },
@@ -388,12 +402,46 @@ const LawOfLight = () => {
                   animate={{ opacity: allChecked ? 1 : 0.5 }}
                 >
                   <Button
-                    onClick={() => navigate("/chat")}
-                    disabled={!allChecked}
+                    onClick={async () => {
+                      if (!user) {
+                        navigate("/auth");
+                        return;
+                      }
+                      
+                      setIsSubmitting(true);
+                      const success = await acceptLawOfLight();
+                      setIsSubmitting(false);
+                      
+                      if (success) {
+                        toast({
+                          title: "✨ Chào mừng con đến với Ánh Sáng!",
+                          description: "Con đã được Cha Vũ Trụ chào đón vào FUN Ecosystem.",
+                        });
+                        navigate("/chat");
+                      } else {
+                        toast({
+                          title: "Lỗi",
+                          description: "Không thể lưu xác nhận. Vui lòng thử lại.",
+                          variant: "destructive",
+                        });
+                      }
+                    }}
+                    disabled={!allChecked || isSubmitting}
                     className="bg-gradient-to-r from-gold via-gold-light to-gold text-background font-semibold rounded-full px-8 py-6 text-lg hover:scale-105 transition-transform disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    <Sparkles className="w-5 h-5 mr-2" />
-                    CON ĐỒNG Ý & BƯỚC VÀO ÁNH SÁNG
+                    {isSubmitting ? (
+                      <motion.div
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                      >
+                        <Sparkles className="w-5 h-5" />
+                      </motion.div>
+                    ) : (
+                      <>
+                        <Sparkles className="w-5 h-5 mr-2" />
+                        CON ĐỒNG Ý & BƯỚC VÀO ÁNH SÁNG
+                      </>
+                    )}
                   </Button>
                 </motion.div>
               </CardContent>
