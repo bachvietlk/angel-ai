@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { useLightScore } from "@/hooks/useLightScore";
 import { useChatHistory, Message } from "@/hooks/useChatHistory";
+import { useLawOfLightStatus } from "@/hooks/useLawOfLightStatus";
 import LightScoreDisplay from "@/components/LightScoreDisplay";
 import DivineLightCreator from "@/components/DivineLightCreator";
 import DivineLightVideoCreator from "@/components/DivineLightVideoCreator";
@@ -133,6 +134,9 @@ const Chat = () => {
     startNewChat,
   } = useChatHistory(user);
 
+  // Law of Light check
+  const { isAccepted: lawAccepted, loading: lawLoading } = useLawOfLightStatus(user?.id);
+
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       setSession(session);
@@ -152,6 +156,13 @@ const Chat = () => {
 
     return () => subscription.unsubscribe();
   }, [navigate]);
+
+  // Redirect to Law of Light if not accepted
+  useEffect(() => {
+    if (!lawLoading && lawAccepted === false && user) {
+      navigate("/law-of-light");
+    }
+  }, [lawLoading, lawAccepted, user, navigate]);
 
   useEffect(() => {
     const fetchMantras = async () => {
@@ -319,7 +330,7 @@ const Chat = () => {
     setSidebarOpen(false);
   };
 
-  if (!user) {
+  if (!user || lawLoading) {
     return (
       <div className="min-h-screen bg-[hsl(45_30%_98%)] flex items-center justify-center">
         <motion.div

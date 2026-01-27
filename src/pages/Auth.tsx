@@ -19,16 +19,35 @@ const Auth = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
+  // Check law of light status and redirect accordingly
+  const checkLawOfLightAndRedirect = async (userId: string) => {
+    try {
+      const { data } = await supabase
+        .from("profiles")
+        .select("law_of_light_accepted_at")
+        .eq("user_id", userId)
+        .maybeSingle();
+
+      if (data?.law_of_light_accepted_at) {
+        navigate("/chat");
+      } else {
+        navigate("/law-of-light");
+      }
+    } catch {
+      navigate("/law-of-light");
+    }
+  };
+
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (session?.user) {
-        navigate("/chat");
+        checkLawOfLightAndRedirect(session.user.id);
       }
     });
 
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session?.user) {
-        navigate("/chat");
+        checkLawOfLightAndRedirect(session.user.id);
       }
     });
 

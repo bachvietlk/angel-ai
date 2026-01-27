@@ -305,6 +305,7 @@ export type Database = {
           followers_count: number
           following_count: number
           id: string
+          law_of_light_accepted_at: string | null
           light_score: number | null
           updated_at: string
           user_id: string
@@ -318,6 +319,7 @@ export type Database = {
           followers_count?: number
           following_count?: number
           id?: string
+          law_of_light_accepted_at?: string | null
           light_score?: number | null
           updated_at?: string
           user_id: string
@@ -331,6 +333,7 @@ export type Database = {
           followers_count?: number
           following_count?: number
           id?: string
+          law_of_light_accepted_at?: string | null
           light_score?: number | null
           updated_at?: string
           user_id?: string
