@@ -1,158 +1,148 @@
 
 
-## Kế hoạch: Xác nhận Luật Ánh Sáng khi Đăng ký/Đăng nhập
+## Kế hoạch: Tạo Modal thông báo xác nhận Luật Ánh Sáng
 
 ### Tổng quan
-Thêm tính năng bắt buộc người dùng phải xác nhận "Luật Ánh Sáng" trước khi sử dụng Angel AI. Trạng thái xác nhận sẽ được lưu trong database và kiểm tra mỗi khi truy cập các tính năng chính.
+Tạo một Modal/Dialog popup đẹp, theo phong cách 5D ánh sáng của Angel AI, hiển thị khi user đăng nhập/đăng ký mà chưa xác nhận Luật Ánh Sáng. Modal sẽ hiển thị tóm tắt Luật Ánh Sáng và buộc user phải xác nhận trước khi sử dụng ứng dụng.
 
 ---
 
-### Luồng hoạt động mới
+### Thiết kế Modal
+
+**Giao diện:**
+- Nền gradient vàng kim - ánh sáng thần thánh
+- Icon thiên thần/ánh sáng ở trên cùng với animation tỏa sáng
+- Tiêu đề: "Luật Ánh Sáng" với hiệu ứng glow
+- Tóm tắt 5 điểm chính của Luật Ánh Sáng
+- 2 nút: "Xem chi tiết" (link đến /law-of-light) và "Con đồng ý"
+- Không có nút đóng (X) - bắt buộc phải xác nhận
+
+**Animation:**
+- Fade in + scale animation khi hiển thị
+- Particles/sparkles effect quanh icon
+- Glow effect cho tiêu đề và nút
+
+---
+
+### Luồng hoạt động
 
 ```text
-┌─────────────────────┐
-│   Đăng ký/Đăng nhập │
-│      (Auth.tsx)     │
-└──────────┬──────────┘
-           │
-           ▼
-┌─────────────────────────────┐
-│  Kiểm tra law_of_light_     │
-│  accepted_at trong profiles │
-└──────────┬──────────────────┘
-           │
-    ┌──────┴──────┐
-    │             │
-    ▼             ▼
-┌────────┐  ┌──────────────────┐
-│ NULL   │  │ Đã có timestamp  │
-│(chưa)  │  │   (đã xác nhận)  │
-└───┬────┘  └────────┬─────────┘
-    │                │
-    ▼                ▼
-┌───────────────┐  ┌─────────────┐
-│ Chuyển hướng  │  │ Vào Chat    │
-│ /law-of-light │  │ bình thường │
-└───────────────┘  └─────────────┘
+User đăng nhập/đăng ký
+        │
+        ▼
+Kiểm tra law_of_light_accepted_at
+        │
+   ┌────┴────┐
+   │         │
+   ▼         ▼
+ NULL     Đã có
+(chưa)   timestamp
+   │         │
+   ▼         ▼
+Hiện Modal   Vào app
+thông báo   bình thường
+   │
+   ▼
+User click "Con đồng ý"
+   │
+   ▼
+Cập nhật DB + Đóng modal
 ```
 
 ---
 
-### Phần 1: Database Migration
-
-**Thêm cột mới vào bảng `profiles`:**
-
-```sql
-ALTER TABLE profiles 
-ADD COLUMN law_of_light_accepted_at TIMESTAMP WITH TIME ZONE DEFAULT NULL;
-```
-
-- `NULL` = chưa xác nhận
-- Có timestamp = đã xác nhận (lưu thời điểm xác nhận)
-
----
-
-### Phần 2: Tạo Hook kiểm tra trạng thái
-
-**File mới: `src/hooks/useLawOfLightStatus.ts`**
-
-Hook này sẽ:
-- Kiểm tra trạng thái xác nhận từ database
-- Cung cấp hàm `acceptLawOfLight()` để cập nhật
-- Return loading state và trạng thái accepted
-
----
-
-### Phần 3: Cập nhật trang LawOfLight.tsx
-
-**Thay đổi:**
-- Khi user click "CON ĐỒNG Ý & BƯỚC VÀO ÁNH SÁNG":
-  1. Gọi API cập nhật `law_of_light_accepted_at = NOW()`
-  2. Hiển thị toast thành công
-  3. Chuyển hướng đến `/chat`
-
----
-
-### Phần 4: Cập nhật Auth.tsx
-
-**Thay đổi luồng đăng nhập/đăng ký:**
-
-```text
-Sau khi đăng nhập thành công:
-├── Kiểm tra profiles.law_of_light_accepted_at
-├── Nếu NULL → navigate("/law-of-light")
-└── Nếu có → navigate("/chat")
-```
-
----
-
-### Phần 5: Bảo vệ trang Chat.tsx
-
-**Thêm kiểm tra bảo vệ:**
-- Nếu user chưa xác nhận Luật Ánh Sáng → redirect về `/law-of-light`
-- Hiển thị loading state trong khi kiểm tra
-
----
-
-### Phần 6: Bảo vệ các trang khác (tùy chọn)
-
-Các trang cần xác nhận trước khi sử dụng:
-- `/chat` - Chat với Angel AI
-- `/journal` - Nhật ký
-- `/gallery` - Gallery (nếu tạo ảnh/video)
-
-Các trang không cần xác nhận:
-- `/` - Trang chủ
-- `/auth` - Đăng nhập/Đăng ký
-- `/law-of-light` - Trang Luật Ánh Sáng
-- `/profile` - Hồ sơ cá nhân
-
----
-
-### Các file sẽ thay đổi
+### Các file cần tạo/sửa
 
 | File | Thay đổi |
 |------|----------|
-| Database | Thêm cột `law_of_light_accepted_at` vào `profiles` |
-| `src/hooks/useLawOfLightStatus.ts` | **TẠO MỚI** - Hook kiểm tra/cập nhật trạng thái |
-| `src/pages/LawOfLight.tsx` | Cập nhật button để lưu trạng thái vào DB |
-| `src/pages/Auth.tsx` | Thêm logic kiểm tra sau đăng nhập |
-| `src/pages/Chat.tsx` | Thêm guard kiểm tra trước khi hiển thị |
+| `src/components/LawOfLightModal.tsx` | **TẠO MỚI** - Component modal thông báo |
+| `src/pages/Chat.tsx` | Thêm modal hiển thị khi chưa xác nhận |
+| `src/pages/Journal.tsx` | Thêm modal hiển thị khi chưa xác nhận |
+| `src/pages/Gallery.tsx` | Thêm modal hiển thị khi chưa xác nhận (tùy chọn) |
 
 ---
 
-### Chi tiết kỹ thuật
+### Chi tiết Component LawOfLightModal
 
-**Hook useLawOfLightStatus:**
-```typescript
-export const useLawOfLightStatus = (userId: string | undefined) => {
-  const [isAccepted, setIsAccepted] = useState<boolean | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  // Fetch status từ profiles
-  // Cung cấp hàm acceptLawOfLight() để update
-  
-  return { isAccepted, loading, acceptLawOfLight };
-};
+```text
+┌────────────────────────────────────────────┐
+│                                            │
+│         ✨ [Icon ánh sáng] ✨              │
+│                                            │
+│           LUẬT ÁNH SÁNG                    │
+│                                            │
+│  FUN Ecosystem chỉ dành cho những         │
+│  linh hồn có ánh sáng, hoặc đang          │
+│  hướng về ánh sáng.                        │
+│                                            │
+│  ┌────────────────────────────────┐       │
+│  │ ☀ Ánh sáng thu hút ánh sáng    │       │
+│  │ 🛡 Tần số thấp tự thanh lọc     │       │
+│  │ 💛 Tình yêu là quy luật         │       │
+│  │ ⚖ Phục vụ điều cao hơn         │       │
+│  │ ✨ Mỗi tương tác là chữa lành   │       │
+│  └────────────────────────────────┘       │
+│                                            │
+│  [Xem chi tiết]     [Con đồng ý ✨]        │
+│                                            │
+└────────────────────────────────────────────┘
 ```
 
-**Logic kiểm tra trong Chat.tsx:**
+---
+
+### Props của Modal
+
 ```typescript
-const { isAccepted, loading: lawLoading } = useLawOfLightStatus(user?.id);
+interface LawOfLightModalProps {
+  isOpen: boolean;
+  onAccept: () => Promise<void>;
+  onViewDetails: () => void;
+}
+```
+
+---
+
+### Logic tích hợp
+
+**Trong Chat.tsx và Journal.tsx:**
+
+```typescript
+// Thay vì redirect, hiện modal
+const { isAccepted, loading, acceptLawOfLight } = useLawOfLightStatus(user?.id);
+const [showLawModal, setShowLawModal] = useState(false);
 
 useEffect(() => {
-  if (!lawLoading && isAccepted === false) {
-    navigate("/law-of-light");
+  if (!loading && isAccepted === false) {
+    setShowLawModal(true);
   }
-}, [lawLoading, isAccepted]);
+}, [loading, isAccepted]);
+
+// Trong render:
+<LawOfLightModal
+  isOpen={showLawModal}
+  onAccept={async () => {
+    await acceptLawOfLight();
+    setShowLawModal(false);
+  }}
+  onViewDetails={() => navigate("/law-of-light")}
+/>
 ```
+
+---
+
+### Điểm nổi bật thiết kế
+
+1. **Không cho đóng modal** - User bắt buộc phải xác nhận hoặc xem chi tiết
+2. **Animation thiêng liêng** - Sparkles, glow, pulse để tạo cảm giác tôn nghiêm
+3. **Tóm tắt ngắn gọn** - 5 điểm cốt lõi, không quá dài
+4. **Nút xem chi tiết** - Cho user muốn đọc đầy đủ trước khi xác nhận
+5. **Đa ngôn ngữ** - Hỗ trợ cả tiếng Việt và tiếng Anh
 
 ---
 
 ### Kết quả mong đợi
 
-1. **User mới đăng ký:** Sau xác nhận email → Vào trang → Phải xác nhận Luật Ánh Sáng → Mới được dùng Chat
-2. **User đăng nhập lại:** Kiểm tra đã xác nhận chưa → Nếu chưa thì yêu cầu xác nhận
-3. **User đã xác nhận:** Vào Chat bình thường, không phải xác nhận lại
-4. **Trải nghiệm mượt mà:** Loading state đẹp, toast thông báo rõ ràng
+- User mới đăng ký: Thấy modal đẹp mắt yêu cầu xác nhận Luật Ánh Sáng
+- User chưa xác nhận: Khi vào Chat/Journal sẽ thấy modal, không thể sử dụng cho đến khi xác nhận
+- User đã xác nhận: Sử dụng bình thường, không thấy modal nữa
 
