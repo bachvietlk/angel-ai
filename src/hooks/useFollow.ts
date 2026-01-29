@@ -50,7 +50,7 @@ export const useFollow = (user: User | null, targetUserId?: string) => {
           description: 'Bạn đã hủy theo dõi người dùng này'
         });
       } else {
-        // Follow
+        // Follow - notification is created automatically via database trigger
         await supabase
           .from('follows')
           .insert({
@@ -63,17 +63,6 @@ export const useFollow = (user: User | null, targetUserId?: string) => {
           title: 'Đã theo dõi',
           description: 'Bạn đã theo dõi người dùng này'
         });
-
-        // Create notification for the followed user
-        await supabase
-          .from('notifications')
-          .insert({
-            user_id: targetUserId,
-            type: 'follow',
-            title: 'Người theo dõi mới',
-            message: 'Có người vừa theo dõi bạn!',
-            data: { follower_id: user.id }
-          });
       }
     } catch (error) {
       console.error('Error toggling follow:', error);
