@@ -18,6 +18,7 @@ import PlatformDocs from "./pages/PlatformDocs";
 import LightConstitution from "./pages/LightConstitution";
 import LawOfLight from "./pages/LawOfLight";
 import ProofOfPureLove from "./pages/ProofOfPureLove";
+import Install from "./pages/Install";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -44,6 +45,7 @@ const App = () => (
               <Route path="/light-constitution" element={<LightConstitution />} />
               <Route path="/law-of-light" element={<LawOfLight />} />
               <Route path="/proof-of-pure-love" element={<ProofOfPureLove />} />
+              <Route path="/install" element={<Install />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
