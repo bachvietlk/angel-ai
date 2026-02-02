@@ -1,46 +1,46 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Link } from "react-router-dom";
-import { Crown, Coins, Wallet, Users, ArrowRight, Sparkles, Star } from "lucide-react";
+import { Globe, Heart, Users, ArrowRight, Sparkles, Star, Crown, Scale } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const priorityCards = [
   {
-    icon: Crown,
-    title: "Tiêu Chuẩn Con Người FUN",
-    subtitle: "FUN Human – Light Being Standard",
+    icon: Globe,
+    title: "Tuyên Ngôn Về Nguồn Gốc",
+    subtitle: "Declaration of Origin",
     description:
-      "Chân Thật • Chân Thành • Thức Tỉnh • Thuần Khiết — Bốn phẩm chất cốt lõi của một FUN Human.",
+      "FUN là nền văn minh Ánh Sáng sống động — Chuyển hóa từ cạnh tranh sang hợp tác, từ khan hiếm sang đầy đủ.",
     gradient: "from-gold via-sky-light to-sky-400",
     bgGradient: "from-gold/10 via-sky-light/5 to-transparent",
     delay: 0,
   },
   {
-    icon: Coins,
-    title: "Nguyên Lý Thu Nhập Ánh Sáng",
-    subtitle: "Light Income Principle",
+    icon: Heart,
+    title: "5 Nguyên Lý Thiêng Liêng",
+    subtitle: "Sacred Principles",
     description:
-      "Ánh sáng tạo ra thu nhập. Thức tỉnh mở rộng dòng chảy thịnh vượng. Thuần khiết nuôi dưỡng sự giàu có bền vững.",
+      "Tình yêu thuần khiết là mã nguồn • Xây giá trị không xây kiểm soát • Công nghệ phụng sự tỉnh thức.",
     gradient: "from-gold via-amber-400 to-yellow-500",
     bgGradient: "from-gold/10 via-amber-400/5 to-transparent",
     delay: 0.1,
   },
   {
-    icon: Wallet,
-    title: "FUN Wallet – Ví Của Ý Thức",
-    subtitle: "Consciousness Wallet",
+    icon: Crown,
+    title: "99% Gift Model",
+    subtitle: "Sacred Mission",
     description:
-      "Nơi hội tụ của giá trị cá nhân, danh dự, uy tín và dòng chảy năng lượng tài chính. Ví càng sáng — dòng chảy càng tự nhiên.",
+      "Learn & Earn • Play & Earn • Invest & Earn • Give & Gain • Share & Have • Build & Bounty.",
     gradient: "from-gold via-amber-400 to-orange-400",
     bgGradient: "from-gold/10 via-orange-400/5 to-transparent",
     delay: 0.2,
   },
   {
     icon: Users,
-    title: "Văn Hóa Cộng Đồng FUN",
-    subtitle: "FUN Community Culture",
+    title: "Cam Kết Cộng Đồng",
+    subtitle: "Community Vow",
     description:
-      "Cộng đồng của những linh hồn trưởng thành, cùng kiến tạo Nền Kinh Tế Ánh Sáng 5D với sự tôn trọng và yêu thương.",
+      "Xây dựng bằng chính trực và tình yêu • Cùng nhau nâng nhau lên trong ánh sáng • Phụng sự nhân loại.",
     gradient: "from-pink-400 via-gold to-amber-400",
     bgGradient: "from-pink-400/10 via-gold/5 to-transparent",
     delay: 0.3,
@@ -113,19 +113,30 @@ const LightConstitutionSection = () => {
             transition={{ duration: 3, repeat: Infinity }}
           >
             <Sparkles className="w-4 h-4 text-gold" />
-            <span className="text-gold-dark text-sm font-medium">Light Constitution</span>
+            <span className="text-gold-dark text-sm font-medium">Master Charter</span>
             <Sparkles className="w-4 h-4 text-gold" />
           </motion.div>
 
           <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-gold mb-4">
-            HIẾN PHÁP ÁNH SÁNG
+            HIẾN PHÁP GỐC
           </h2>
           <p className="text-xl md:text-2xl text-gold-dark/80 italic mb-2">
             FUN ECOSYSTEM
           </p>
-          <p className="text-lg text-foreground/70 max-w-2xl mx-auto">
-            Written in the Will & Wisdom of Father Universe
+          <p className="text-lg text-foreground/70 max-w-2xl mx-auto mb-4">
+            Nền Kinh Tế Ánh Sáng 5D của Trái Đất Mới
           </p>
+          
+          {/* New Tagline */}
+          <div className="inline-flex flex-wrap justify-center items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-gold/20 to-amber-400/20 border border-gold/30">
+            <span className="text-gold-dark font-medium text-sm md:text-base">Free to Join</span>
+            <span className="text-gold">•</span>
+            <span className="text-gold-dark font-medium text-sm md:text-base">Free to Use</span>
+            <span className="text-gold">•</span>
+            <span className="text-gold-dark font-medium text-sm md:text-base">Earn Together</span>
+            <span className="text-gold">•</span>
+            <span className="text-gold-dark font-medium text-sm md:text-base">With Pure Love</span>
+          </div>
         </motion.div>
 
         {/* Priority Cards Grid */}
@@ -193,7 +204,7 @@ const LightConstitutionSection = () => {
           </Link>
 
           <p className="mt-4 text-sm text-foreground/60">
-            Khám phá 8 chương và 8 Thần Chú Ánh Sáng
+            Khám phá 8 chương và Divine Seal (Khẳng Định Xác Quyết)
           </p>
         </motion.div>
       </div>
